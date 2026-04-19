@@ -1,0 +1,599 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AMT — Adib Mazloom</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --gold: #C8973A;
+      --gold-light: #E8B860;
+      --dark: #0A0A0A;
+      --dark2: #111111;
+      --dark3: #181818;
+      --white: #F5F2ED;
+      --muted: #888;
+      --line: rgba(200,151,58,0.2);
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--dark);
+      color: var(--white);
+      overflow-x: hidden;
+      cursor: none;
+    }
+
+    .cursor {
+      width: 10px; height: 10px;
+      border-radius: 50%;
+      background: var(--gold);
+      position: fixed; top: 0; left: 0;
+      pointer-events: none; z-index: 9999;
+    }
+    .cursor-ring {
+      width: 36px; height: 36px;
+      border-radius: 50%;
+      border: 1px solid var(--gold);
+      position: fixed; top: 0; left: 0;
+      pointer-events: none; z-index: 9998;
+      transition: transform 0.4s ease; opacity: 0.5;
+    }
+
+    nav {
+      position: fixed; top: 0; width: 100%;
+      padding: 22px 48px;
+      display: flex; align-items: center; justify-content: space-between;
+      z-index: 100;
+      background: rgba(10,10,10,0.95);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--line);
+    }
+    .nav-logo {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 22px; letter-spacing: 3px;
+      color: var(--white); text-decoration: none;
+    }
+    .nav-logo span { color: var(--gold); }
+    .nav-back {
+      font-family: 'DM Mono', monospace;
+      font-size: 11px; letter-spacing: 2px; text-transform: uppercase;
+      color: var(--muted); text-decoration: none;
+      display: flex; align-items: center; gap: 8px;
+      transition: color 0.3s;
+    }
+    .nav-back:hover { color: var(--gold); }
+
+    /* HERO */
+    .page-hero {
+      min-height: 60vh;
+      display: flex; flex-direction: column; justify-content: flex-end;
+      padding: 120px 48px 80px;
+      position: relative; overflow: hidden;
+      background: var(--dark2);
+      border-bottom: 1px solid var(--line);
+    }
+    .page-hero::before {
+      content: '';
+      position: absolute; inset: 0;
+      background-image:
+        linear-gradient(rgba(200,151,58,0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(200,151,58,0.04) 1px, transparent 1px);
+      background-size: 60px 60px;
+    }
+    .page-hero-glow {
+      position: absolute;
+      width: 600px; height: 600px;
+      background: radial-gradient(circle, rgba(200,151,58,0.1) 0%, transparent 70%);
+      top: -200px; right: -100px; border-radius: 50%;
+    }
+    .page-hero-content { position: relative; z-index: 1; max-width: 900px; }
+    .page-eyebrow {
+      font-family: 'DM Mono', monospace;
+      font-size: 11px; letter-spacing: 4px; text-transform: uppercase;
+      color: var(--gold); margin-bottom: 20px;
+    }
+    .page-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(52px, 8vw, 110px);
+      line-height: 0.92; letter-spacing: 2px; color: var(--white);
+    }
+    .page-title span { color: var(--gold); }
+    .page-subtitle {
+      margin-top: 28px; font-size: 17px; font-weight: 300;
+      color: var(--muted); max-width: 600px; line-height: 1.7;
+    }
+    .page-subtitle strong { color: var(--white); font-weight: 500; }
+    .page-meta {
+      display: flex; gap: 40px; margin-top: 40px; flex-wrap: wrap;
+    }
+    .meta-item {}
+    .meta-label {
+      font-family: 'DM Mono', monospace;
+      font-size: 9px; letter-spacing: 3px; text-transform: uppercase;
+      color: var(--muted); margin-bottom: 4px;
+    }
+    .meta-value { font-size: 15px; font-weight: 500; color: var(--white); }
+
+    /* CONTENT */
+    .page-content { max-width: 1100px; margin: 0 auto; padding: 80px 48px; }
+
+    .content-section { margin-bottom: 80px; }
+    .content-label {
+      font-family: 'DM Mono', monospace;
+      font-size: 10px; letter-spacing: 4px; text-transform: uppercase;
+      color: var(--gold); margin-bottom: 12px;
+      display: flex; align-items: center; gap: 16px;
+    }
+    .content-label::before { content: ''; width: 32px; height: 1px; background: var(--gold); }
+    .content-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(32px, 4vw, 52px);
+      letter-spacing: 1px; margin-bottom: 32px; line-height: 1;
+    }
+
+    /* IMPACT NUMBERS */
+    .impact-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 2px;
+      margin-bottom: 80px;
+    }
+    .impact-card {
+      background: var(--dark2);
+      padding: 36px 28px;
+      border: 1px solid var(--line);
+      text-align: center;
+      transition: border-color 0.3s;
+    }
+    .impact-card:hover { border-color: rgba(200,151,58,0.5); }
+    .impact-num {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 52px; color: var(--gold); line-height: 1;
+    }
+    .impact-unit { font-size: 18px; color: var(--gold-light); }
+    .impact-label {
+      font-family: 'DM Mono', monospace;
+      font-size: 10px; letter-spacing: 2px; text-transform: uppercase;
+      color: var(--muted); margin-top: 8px; line-height: 1.5;
+    }
+
+    /* ROLE LIST */
+    .role-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+    .role-card {
+      background: var(--dark2);
+      border: 1px solid var(--line);
+      border-radius: 2px;
+      padding: 28px;
+      transition: border-color 0.3s, transform 0.3s;
+    }
+    .role-card:hover {
+      border-color: rgba(200,151,58,0.4);
+      transform: translateY(-2px);
+    }
+    .role-icon { font-size: 24px; margin-bottom: 12px; }
+    .role-title {
+      font-family: 'DM Mono', monospace;
+      font-size: 11px; letter-spacing: 2px; text-transform: uppercase;
+      color: var(--gold); margin-bottom: 10px;
+    }
+    .role-desc { font-size: 14px; line-height: 1.7; color: #aaa; }
+    .role-desc strong { color: var(--white); font-weight: 500; }
+
+    /* 3D PRINTING SECTION */
+    .printing-layout {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 48px;
+      align-items: start;
+    }
+    .printing-copy p {
+      font-size: 15px; line-height: 1.8; color: #bbb; margin-bottom: 18px;
+    }
+    .printing-copy p strong { color: var(--white); font-weight: 500; }
+    .printer-list { display: flex; flex-direction: column; gap: 12px; }
+    .printer-item {
+      background: var(--dark2);
+      border: 1px solid var(--line);
+      border-radius: 2px;
+      padding: 20px 24px;
+      display: flex; align-items: center; gap: 16px;
+      transition: border-color 0.3s, transform 0.3s;
+    }
+    .printer-item:hover {
+      border-color: rgba(200,151,58,0.4);
+      transform: translateX(4px);
+    }
+    .printer-icon { font-size: 22px; flex-shrink: 0; }
+    .printer-name {
+      font-family: 'DM Mono', monospace;
+      font-size: 12px; letter-spacing: 1px; color: var(--gold-light);
+      margin-bottom: 2px;
+    }
+    .printer-type { font-size: 12px; color: var(--muted); }
+
+    /* PROGRAMS */
+    .programs-list { display: flex; flex-direction: column; gap: 0; }
+    .program-item {
+      display: grid;
+      grid-template-columns: 60px 1fr;
+      gap: 24px;
+      padding: 28px 0;
+      border-bottom: 1px solid var(--line);
+      align-items: start;
+    }
+    .program-item:first-child { border-top: 1px solid var(--line); }
+    .program-num {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 38px; color: rgba(200,151,58,0.25); line-height: 1; padding-top: 4px;
+    }
+    .program-name {
+      font-size: 17px; font-weight: 600; color: var(--white); margin-bottom: 6px;
+    }
+    .program-desc { font-size: 13px; line-height: 1.65; color: #999; }
+    .program-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
+    .program-tag {
+      font-family: 'DM Mono', monospace;
+      font-size: 9px; letter-spacing: 1px; text-transform: uppercase;
+      padding: 3px 8px; border: 1px solid var(--line); color: var(--muted); border-radius: 2px;
+    }
+
+    /* QUOTE BLOCK */
+    .quote-block {
+      background: var(--dark2);
+      border-left: 3px solid var(--gold);
+      padding: 32px 40px;
+      margin: 60px 0;
+      border-radius: 0 2px 2px 0;
+    }
+    .quote-text {
+      font-size: 20px; font-weight: 300; line-height: 1.7;
+      color: var(--white); font-style: italic;
+    }
+    .quote-text strong { font-weight: 600; font-style: normal; color: var(--gold-light); }
+
+    /* FOOTER */
+    footer {
+      padding: 32px 48px; background: var(--dark);
+      border-top: 1px solid var(--line);
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .footer-logo { font-family: 'Bebas Neue', sans-serif; font-size: 18px; letter-spacing: 3px; color: var(--white); }
+    .footer-logo span { color: var(--gold); }
+    .footer-back {
+      font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 2px;
+      color: var(--muted); text-decoration: none; transition: color 0.3s;
+    }
+    .footer-back:hover { color: var(--gold); }
+
+    /* REVEAL */
+    .reveal { opacity: 0; transform: translateY(30px); transition: opacity 0.7s ease, transform 0.7s ease; }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+
+    /* SECTION DIVIDER */
+    .section-divider { width: 100%; height: 1px; background: linear-gradient(90deg, transparent, var(--gold), transparent); opacity: 0.25; }
+
+    @media (max-width: 900px) {
+      .page-hero { padding: 100px 24px 60px; }
+      .page-content { padding: 60px 24px; }
+      nav { padding: 20px 24px; }
+      .impact-grid { grid-template-columns: repeat(2, 1fr); }
+      .role-grid { grid-template-columns: 1fr; }
+      .printing-layout { grid-template-columns: 1fr; }
+      footer { padding: 24px; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="cursor" id="cursor"></div>
+  <div class="cursor-ring" id="cursorRing"></div>
+
+  <nav>
+    <a class="nav-logo" href="../index.html">ADIB <span>MAZLOOM</span></a>
+    <a class="nav-back" href="../index.html">← Back to Portfolio</a>
+  </nav>
+
+  <!-- PAGE HERO -->
+  <div class="page-hero">
+    <div class="page-hero-glow"></div>
+    <div class="page-hero-content">
+      <div class="page-eyebrow">May 2025 – Present · San Diego, CA</div>
+      <div class="page-title">ATHLETE<br>MANAGEMENT<br><span>TECHNOLOGIES</span></div>
+      <p class="page-subtitle">
+        Lead Mechanical Engineer — running <strong>6+ concurrent hardware programs</strong> 
+        while also operating as the company's hands-on fabrication, prototyping, and 3D printing 
+        operation. I'm not just designing — I'm building.
+      </p>
+      <div class="page-meta">
+        <div class="meta-item">
+          <div class="meta-label">Role</div>
+          <div class="meta-value">Lead Mechanical Engineer</div>
+        </div>
+        <div class="meta-item">
+          <div class="meta-label">Location</div>
+          <div class="meta-value">San Diego, CA</div>
+        </div>
+        <div class="meta-item">
+          <div class="meta-label">Programs</div>
+          <div class="meta-value">6+ Concurrent</div>
+        </div>
+        <div class="meta-item">
+          <div class="meta-label">Stage</div>
+          <div class="meta-value">Startup / Full Ownership</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- IMPACT -->
+  <div class="page-content">
+
+    <div class="impact-grid reveal">
+      <div class="impact-card">
+        <div class="impact-num">6<span class="impact-unit">+</span></div>
+        <div class="impact-label">Concurrent Hardware Programs</div>
+      </div>
+      <div class="impact-card">
+        <div class="impact-num">~50<span class="impact-unit">%</span></div>
+        <div class="impact-label">Reduction in Development Cycle Time</div>
+      </div>
+      <div class="impact-card">
+        <div class="impact-num">~30<span class="impact-unit">%</span></div>
+        <div class="impact-label">Durability Increase via Testing</div>
+      </div>
+      <div class="impact-card">
+        <div class="impact-num">10–20</div>
+        <div class="impact-label">Hardware Iterations Per Program</div>
+      </div>
+    </div>
+
+    <div class="quote-block reveal">
+      <div class="quote-text">
+        "At a startup, there's no department to hand things off to. 
+        I own the <strong>design, the prototyping, the testing, the iteration, 
+        the production drawings, and the 3D printing operation</strong> — 
+        all of it, simultaneously. That's not a burden. That's how I prefer to work."
+      </div>
+    </div>
+
+    <div class="section-divider" style="margin-bottom: 80px;"></div>
+
+    <!-- WHAT I DO -->
+    <div class="content-section reveal">
+      <div class="content-label">Scope of Work</div>
+      <div class="content-title">WHAT I ACTUALLY DO HERE</div>
+      <div class="role-grid">
+        <div class="role-card">
+          <div class="role-icon">📐</div>
+          <div class="role-title">Mechanical Design & CAD</div>
+          <div class="role-desc">
+            Create <strong>detailed CAD models and engineering drawings</strong> for all hardware programs. 
+            Develop system architecture and packaging solutions that balance performance, durability, 
+            manufacturability, and reliability — all at the same time.
+          </div>
+        </div>
+        <div class="role-card">
+          <div class="role-icon">🖨️</div>
+          <div class="role-title">3D Printing Operations</div>
+          <div class="role-desc">
+            Run the company's entire additive manufacturing operation. Managing <strong>FDM and resin 
+            printers</strong> (Bambu Lab, Mingda, Formlabs) across multiple programs simultaneously — 
+            material selection, print settings, post-processing, and quality control.
+          </div>
+        </div>
+        <div class="role-card">
+          <div class="role-icon">🔬</div>
+          <div class="role-title">Analysis & Simulation</div>
+          <div class="role-desc">
+            Perform <strong>structural and thermal analysis</strong> using first principles and simulation 
+            tools to evaluate designs and guide engineering decisions before cutting hardware. 
+            FEA-driven iteration to get to the right answer faster.
+          </div>
+        </div>
+        <div class="role-card">
+          <div class="role-icon">🧪</div>
+          <div class="role-title">Test & Validation</div>
+          <div class="role-desc">
+            Execute validation testing, collect and analyze performance data, and perform 
+            <strong>root cause failure analysis</strong> to drive design improvements. 
+            Closed the loop between simulation and hardware reality.
+          </div>
+        </div>
+        <div class="role-card">
+          <div class="role-icon">⚡</div>
+          <div class="role-title">Electronics Integration</div>
+          <div class="role-desc">
+            Integrate <strong>sensors, electronics, and mechanical components</strong> into testable 
+            assemblies. Hands-on soldering, electromechanical assembly, and troubleshooting 
+            of embedded hardware systems.
+          </div>
+        </div>
+        <div class="role-card">
+          <div class="role-icon">🏭</div>
+          <div class="role-title">Production Scaling</div>
+          <div class="role-desc">
+            Design for manufacturability (DFM) and assembly (DFA) from day one. GD&T on all 
+            drawings. Support the transition from <strong>prototype to production release</strong> — 
+            including supplier communication and production documentation.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section-divider" style="margin: 0 0 80px;"></div>
+
+    <!-- 3D PRINTING DEEP DIVE -->
+    <div class="content-section reveal">
+      <div class="content-label">Fabrication</div>
+      <div class="content-title">THE 3D PRINTING OPERATION</div>
+      <div class="printing-layout">
+        <div class="printing-copy">
+          <p>
+            I run the <strong>full additive manufacturing operation</strong> for AMT — from selecting 
+            the right process and material for each application, to managing print queues across 
+            multiple machines, to post-processing and quality inspection.
+          </p>
+          <p>
+            This means knowing when to use <strong>FDM vs. resin</strong>, which materials hold up 
+            under vibration or heat, how to orient parts for strength, and how to design 
+            features that actually print reliably — not just look good in CAD.
+          </p>
+          <p>
+            With <strong>10–20 iterations per hardware program</strong>, the printing operation 
+            is a core part of what makes the development cycle fast. When I can turn around 
+            a new iteration same-day, the whole program moves faster.
+          </p>
+          <p>
+            <strong>Materials I regularly work with:</strong> PLA, PETG, ABS, ASA, TPU, 
+            engineering-grade nylons, and photopolymer resins for precision components.
+          </p>
+        </div>
+        <div class="printer-list">
+          <div style="font-family:'DM Mono',monospace;font-size:10px;letter-spacing:3px;color:var(--gold);margin-bottom:12px;text-transform:uppercase;">Machines in Operation</div>
+          <div class="printer-item">
+            <div class="printer-icon">🖨️</div>
+            <div>
+              <div class="printer-name">Bambu Lab</div>
+              <div class="printer-type">FDM · High-speed multi-material, functional prototypes</div>
+            </div>
+          </div>
+          <div class="printer-item">
+            <div class="printer-icon">🖨️</div>
+            <div>
+              <div class="printer-name">Mingda</div>
+              <div class="printer-type">FDM · Large-format parts, structural components</div>
+            </div>
+          </div>
+          <div class="printer-item">
+            <div class="printer-icon">🔬</div>
+            <div>
+              <div class="printer-name">Formlabs</div>
+              <div class="printer-type">Resin (SLA) · High-detail, precision enclosures & parts</div>
+            </div>
+          </div>
+          <div style="margin-top:20px;padding:20px 24px;background:var(--dark2);border:1px solid var(--line);border-radius:2px;">
+            <div style="font-family:'DM Mono',monospace;font-size:10px;letter-spacing:2px;color:var(--gold);margin-bottom:8px;text-transform:uppercase;">Why this matters</div>
+            <div style="font-size:13px;color:#999;line-height:1.65;">
+              Most engineers rely on a separate fab team for prototypes. I close that loop myself — 
+              designing, printing, testing, and iterating without handoff delays. 
+              This is a direct driver of the ~50% cycle time reduction.
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section-divider" style="margin: 0 0 80px;"></div>
+
+    <!-- PROGRAMS -->
+    <div class="content-section reveal">
+      <div class="content-label">Active Work</div>
+      <div class="content-title">HARDWARE PROGRAMS</div>
+      <div class="programs-list">
+        <div class="program-item">
+          <div class="program-num">01</div>
+          <div>
+            <div class="program-name">Autonomous Drone System</div>
+            <div class="program-desc">
+              Modular drone architecture designed for scalable deployment and adaptable payload integration. 
+              Leading airframe structure, motor mounting, propulsion integration, and power delivery systems. 
+              Developed a functional V1 prototype. Filed provisional patent for the core architecture.
+            </div>
+            <div class="program-tags">
+              <span class="program-tag">Provisional Patent</span>
+              <span class="program-tag">Airframe</span>
+              <span class="program-tag">Propulsion</span>
+              <span class="program-tag">System Integration</span>
+            </div>
+          </div>
+        </div>
+        <div class="program-item">
+          <div class="program-num">02</div>
+          <div>
+            <div class="program-name">Wearable Sensor Systems</div>
+            <div class="program-desc">
+              Ruggedized enclosures for athlete-worn sensor hardware. Designed for durability, 
+              field serviceability, and real-world abuse. Extensive vibration and impact testing. 
+              Thermal and moisture management integrated into packaging design.
+            </div>
+            <div class="program-tags">
+              <span class="program-tag">Ruggedized Design</span>
+              <span class="program-tag">Electronics Packaging</span>
+              <span class="program-tag">Thermal Management</span>
+              <span class="program-tag">DFM</span>
+            </div>
+          </div>
+        </div>
+        <div class="program-item">
+          <div class="program-num">03</div>
+          <div>
+            <div class="program-name">Multi-Unit Charging Systems</div>
+            <div class="program-desc">
+              Scalable charging infrastructure for multi-device fleets. Focus on thermal 
+              performance under sustained load, production-ready design, and field reliability. 
+              Designed for volume manufacturability from the first iteration.
+            </div>
+            <div class="program-tags">
+              <span class="program-tag">Thermal Design</span>
+              <span class="program-tag">Manufacturability</span>
+              <span class="program-tag">Power Systems</span>
+              <span class="program-tag">Production Scaling</span>
+            </div>
+          </div>
+        </div>
+        <div class="program-item">
+          <div class="program-num">04–06</div>
+          <div>
+            <div class="program-name">Additional Concurrent Programs</div>
+            <div class="program-desc">
+              Managing 3+ additional active hardware programs simultaneously — each at different 
+              stages of the development lifecycle. System architecture, packaging design, 
+              prototyping, and test execution running in parallel across the portfolio.
+            </div>
+            <div class="program-tags">
+              <span class="program-tag">Parallel Execution</span>
+              <span class="program-tag">Program Management</span>
+              <span class="program-tag">Cross-Program Reuse</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- end page-content -->
+
+  <footer>
+    <div class="footer-logo">ADIB <span>MAZLOOM</span></div>
+    <a class="footer-back" href="../index.html">← Back to Portfolio</a>
+  </footer>
+
+  <script>
+    const cursor = document.getElementById('cursor');
+    const ring = document.getElementById('cursorRing');
+    let mx = 0, my = 0, rx = 0, ry = 0;
+    document.addEventListener('mousemove', e => {
+      mx = e.clientX; my = e.clientY;
+      cursor.style.transform = `translate(${mx - 5}px, ${my - 5}px)`;
+    });
+    function animateRing() {
+      rx += (mx - rx) * 0.12; ry += (my - ry) * 0.12;
+      ring.style.transform = `translate(${rx - 18}px, ${ry - 18}px)`;
+      requestAnimationFrame(animateRing);
+    }
+    animateRing();
+
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+    }, { threshold: 0.1 });
+    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+  </script>
+</body>
+</html>
