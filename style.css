@@ -36,7 +36,8 @@ section {
 }
 
 .project img {
-  width: 250px;
+  max-width: 300px;
+  height: auto;
   border-radius: 10px;
 }
 
