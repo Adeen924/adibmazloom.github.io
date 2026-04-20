@@ -118,14 +118,14 @@
       <div class="page-eyebrow">Embedded Systems · Hardware + Software</div>
       <div class="page-title">TRACK<br><span>TECH PRO</span></div>
       <p class="page-subtitle">
-        A standalone <strong>PCB-based data acquisition system</strong> built to measure 
-        and log brake pad temperatures in real time — hardware designed, firmware written, 
-        and installed on-vehicle.
+        A standalone <strong>Arduino-based data acquisition system</strong> built on a breadboard 
+        to measure and log brake pad temperatures in real time — and correlate high-temperature 
+        braking events with cornering data from an onboard IMU to diagnose driver braking habits.
       </p>
       <div class="page-meta">
         <div class="meta-item"><div class="meta-label">Type</div><div class="meta-value">Embedded Hardware + Firmware</div></div>
         <div class="meta-item"><div class="meta-label">Domain</div><div class="meta-value">Automotive / Motorsport</div></div>
-        <div class="meta-item"><div class="meta-label">Stack</div><div class="meta-value">Custom PCB · Sensors · Display</div></div>
+        <div class="meta-item"><div class="meta-label">Stack</div><div class="meta-value">Arduino Nano · Breadboard · IMU · LCD</div></div>
         <div class="meta-item"><div class="meta-label">Status</div><div class="meta-value">Completed</div></div>
       </div>
     </div>
@@ -212,24 +212,24 @@
         <div class="tech-col-icon">🔌</div>
         <div class="tech-col-title">Hardware</div>
         <ul>
-          <li>Custom PCB — designed and fabricated</li>
-          <li>Thermocouple inputs at each corner</li>
-          <li>Signal conditioning and amplification</li>
-          <li>On-board power regulation</li>
-          <li>LCD display interface</li>
-          <li>SD card data logging</li>
+          <li>Arduino Nano — main controller on breadboard</li>
+          <li>Thermocouple sensors at brake corners</li>
+          <li>IMU — accelerometer + gyroscope for cornering data</li>
+          <li>LCD display — real-time temp readout</li>
+          <li>12V vehicle power input with regulation</li>
+          <li>Custom wiring harness to each corner</li>
         </ul>
       </div>
       <div class="tech-col">
         <div class="tech-col-icon">💻</div>
         <div class="tech-col-title">Firmware</div>
         <ul>
-          <li>Embedded C firmware</li>
-          <li>Real-time sensor polling loop</li>
-          <li>Temperature thresholds and alerts</li>
-          <li>Display rendering and refresh</li>
-          <li>Data formatting and SD write</li>
-          <li>Power-on calibration routine</li>
+          <li>Arduino C/C++ sketch</li>
+          <li>Real-time multi-sensor polling loop</li>
+          <li>Temperature threshold logic and alerts</li>
+          <li>IMU data read and cornering event detection</li>
+          <li>Brake temp + cornering correlation logic</li>
+          <li>LCD display rendering and refresh</li>
         </ul>
       </div>
       <div class="tech-col">
@@ -248,42 +248,44 @@
 
     <div class="section-divider"></div>
 
-    <!-- CODE SAMPLE -->
+    <!-- IMU CORRELATION -->
     <div class="reveal">
-      <div class="content-label">Firmware Sample</div>
-      <div class="content-title">THE CODE</div>
+      <div class="content-label">The Key Insight</div>
+      <div class="content-title">TEMP + CORNERING =<br>REAL COACHING DATA</div>
     </div>
-    <div class="code-block reveal">
-<span class="code-comment">// TrackTechPro — Brake Temperature Monitor</span>
-<span class="code-comment">// Real-time thermocouple read loop with display update</span>
-
-<span class="code-keyword">void</span> loop() {
-  <span class="code-keyword">float</span> fl_temp = readThermocouple(PIN_FL);
-  <span class="code-keyword">float</span> fr_temp = readThermocouple(PIN_FR);
-  <span class="code-keyword">float</span> rl_temp = readThermocouple(PIN_RL);
-  <span class="code-keyword">float</span> rr_temp = readThermocouple(PIN_RR);
-
-  <span class="code-comment">// Check against threshold — alert if overtemp</span>
-  <span class="code-keyword">if</span> (fl_temp > TEMP_WARN || fr_temp > TEMP_WARN) {
-    triggerAlert(ALERT_FRONT);
-  }
-
-  <span class="code-comment">// Render to LCD</span>
-  lcd.setCursor(<span class="code-num">0</span>, <span class="code-num">0</span>);
-  lcd.print(<span class="code-string">"FL:"</span>); lcd.print(fl_temp, <span class="code-num">1</span>);
-  lcd.print(<span class="code-string">"  FR:"</span>); lcd.print(fr_temp, <span class="code-num">1</span>);
-  lcd.setCursor(<span class="code-num">0</span>, <span class="code-num">1</span>);
-  lcd.print(<span class="code-string">"RL:"</span>); lcd.print(rl_temp, <span class="code-num">1</span>);
-  lcd.print(<span class="code-string">"  RR:"</span>); lcd.print(rr_temp, <span class="code-num">1</span>);
-
-  <span class="code-comment">// Log to SD card every 500ms</span>
-  <span class="code-keyword">if</span> (millis() - lastLog > <span class="code-num">500</span>) {
-    logToSD(fl_temp, fr_temp, rl_temp, rr_temp);
-    lastLog = millis();
-  }
-
-  delay(<span class="code-num">100</span>);
-}
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:start" class="reveal">
+      <div>
+        <p style="font-size:15px;line-height:1.85;color:#bbb;margin-bottom:18px;">
+          Brake temperature alone tells you <em>that</em> something is happening — it doesn't tell you <em>why</em>. 
+          Adding an <strong>IMU to the system</strong> was the design decision that turned a temperature 
+          logger into an actual driver coaching tool.
+        </p>
+        <p style="font-size:15px;line-height:1.85;color:#bbb;margin-bottom:18px;">
+          The IMU measures lateral G-force in real time. When high brake temperatures coincide 
+          with high lateral G — the car is cornering — that's a <strong>trail-braking event</strong>. 
+          When it happens repeatedly at the same corner, that's a driver habit. 
+          A problem the driver may not even know they have.
+        </p>
+        <p style="font-size:15px;line-height:1.85;color:#bbb;">
+          This is the kind of systems-level thinking I apply to every problem: 
+          <strong>what data do I actually need to answer the real question</strong>, 
+          and how do I build the system that captures it?
+        </p>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:12px;">
+        <div style="background:var(--dark2);border:1px solid var(--line);border-left:3px solid var(--gold);padding:24px 28px;">
+          <div style="font-family:'DM Mono',monospace;font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-bottom:8px;">Correlation Logic</div>
+          <div style="font-size:13px;color:#aaa;line-height:1.65;">High brake temp + high lateral G at the same timestamp = braking too hard in the corner. The system flags these events and the driver can review them after the session.</div>
+        </div>
+        <div style="background:var(--dark2);border:1px solid var(--line);border-radius:2px;padding:24px 28px;">
+          <div style="font-family:'DM Mono',monospace;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--gold);margin-bottom:8px;">What It Tells You</div>
+          <div style="font-size:13px;color:#aaa;line-height:1.65;">Which corner. How often. How severe. That's actionable coaching data that no off-the-shelf system at this price point provides.</div>
+        </div>
+        <div style="background:var(--dark2);border:1px solid var(--line);border-radius:2px;padding:24px 28px;">
+          <div style="font-family:'DM Mono',monospace;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--gold);margin-bottom:8px;">Built on a Breadboard</div>
+          <div style="font-size:13px;color:#aaa;line-height:1.65;">Arduino Nano as the brain. Thermocouples, IMU, and LCD wired together on a breadboard and packaged for vehicle installation. Simple hardware, real engineering thinking.</div>
+        </div>
+      </div>
     </div>
 
   </div>

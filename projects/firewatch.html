@@ -3,121 +3,126 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>FireWatch Drone System — Adib Mazloom</title>
+  <title>FireWatch — Adib Mazloom</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
   <style>
-    :root {
-      --gold: #C8973A; --gold-light: #E8B860;
-      --dark: #0A0A0A; --dark2: #111111; --dark3: #181818;
-      --white: #F5F2ED; --muted: #888; --line: rgba(200,151,58,0.2);
-    }
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    html { scroll-behavior: smooth; }
-    body { font-family: 'DM Sans', sans-serif; background: var(--dark); color: var(--white); overflow-x: hidden; cursor: none; }
-    .cursor { width: 10px; height: 10px; border-radius: 50%; background: var(--gold); position: fixed; top: 0; left: 0; pointer-events: none; z-index: 9999; }
-    .cursor-ring { width: 36px; height: 36px; border-radius: 50%; border: 1px solid var(--gold); position: fixed; top: 0; left: 0; pointer-events: none; z-index: 9998; transition: width 0.3s, height 0.3s, opacity 0.3s; opacity: 0.5; }
-    nav { position: fixed; top: 0; width: 100%; padding: 22px 48px; display: flex; align-items: center; justify-content: space-between; z-index: 100; background: rgba(10,10,10,0.95); backdrop-filter: blur(12px); border-bottom: 1px solid var(--line); }
-    .nav-logo { font-family: 'Bebas Neue', sans-serif; font-size: 22px; letter-spacing: 3px; color: var(--white); text-decoration: none; }
-    .nav-logo span { color: var(--gold); }
-    .nav-back { font-family: 'DM Mono', monospace; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--muted); text-decoration: none; transition: color 0.3s; }
-    .nav-back:hover { color: var(--gold); }
+    :root { --gold:#C8973A;--gold-light:#E8B860;--dark:#0A0A0A;--dark2:#111111;--dark3:#181818;--white:#F5F2ED;--muted:#888;--line:rgba(200,151,58,0.2); }
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    html{scroll-behavior:smooth}
+    body{font-family:"DM Sans",sans-serif;background:var(--dark);color:var(--white);overflow-x:hidden;cursor:none}
+    .cursor{width:10px;height:10px;border-radius:50%;background:var(--gold);position:fixed;top:0;left:0;pointer-events:none;z-index:9999}
+    .cursor-ring{width:36px;height:36px;border-radius:50%;border:1px solid var(--gold);position:fixed;top:0;left:0;pointer-events:none;z-index:9998;transition:width .3s,height .3s,opacity .3s;opacity:.5}
+    nav{position:fixed;top:0;width:100%;padding:22px 48px;display:flex;align-items:center;justify-content:space-between;z-index:100;background:rgba(10,10,10,.95);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+    .nav-logo{font-family:"Bebas Neue",sans-serif;font-size:22px;letter-spacing:3px;color:var(--white);text-decoration:none}
+    .nav-logo span{color:var(--gold)}
+    .nav-back{font-family:"DM Mono",monospace;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);text-decoration:none;transition:color .3s}
+    .nav-back:hover{color:var(--gold)}
 
-    .page-hero { min-height: 70vh; display: flex; flex-direction: column; justify-content: flex-end; padding: 120px 48px 72px; position: relative; overflow: hidden; border-bottom: 1px solid var(--line); }
-    .hero-bg-img { position: absolute; inset: 0; background-image: url('../assets/images/firewatch/firewatch1.jpg'); background-size: cover; background-position: center; filter: brightness(0.2) grayscale(10%); }
-    .hero-grid { position: absolute; inset: 0; background-image: linear-gradient(rgba(200,151,58,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(200,151,58,0.03) 1px, transparent 1px); background-size: 60px 60px; }
-    .hero-glow { position: absolute; width: 700px; height: 700px; background: radial-gradient(circle, rgba(200,80,20,0.1) 0%, rgba(200,151,58,0.08) 40%, transparent 70%); bottom: -200px; right: -100px; border-radius: 50%; }
-    .status-badge { display: inline-flex; align-items: center; gap: 8px; font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 3px; text-transform: uppercase; color: var(--gold); border: 1px solid rgba(200,151,58,0.4); padding: 6px 14px; border-radius: 2px; margin-bottom: 24px; background: rgba(200,151,58,0.06); }
-    .status-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--gold); animation: blink 2s ease-in-out infinite; }
-    @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.2; } }
-    .page-hero-content { position: relative; z-index: 1; max-width: 900px; }
-    .page-eyebrow { font-family: 'DM Mono', monospace; font-size: 11px; letter-spacing: 4px; text-transform: uppercase; color: var(--gold); margin-bottom: 20px; }
-    .page-title { font-family: 'Bebas Neue', sans-serif; font-size: clamp(56px, 9vw, 120px); line-height: 0.9; letter-spacing: 2px; color: var(--white); }
-    .page-title span { color: var(--gold); }
-    .page-subtitle { margin-top: 28px; font-size: 17px; font-weight: 300; color: #bbb; max-width: 600px; line-height: 1.7; }
-    .page-subtitle strong { color: var(--white); font-weight: 500; }
-    .page-meta { display: flex; gap: 40px; margin-top: 40px; flex-wrap: wrap; }
-    .meta-item .meta-label { font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 3px; text-transform: uppercase; color: var(--muted); margin-bottom: 4px; }
-    .meta-item .meta-value { font-size: 15px; font-weight: 500; color: var(--white); }
+    .page-hero{min-height:75vh;display:flex;flex-direction:column;justify-content:flex-end;padding:120px 48px 72px;position:relative;overflow:hidden;border-bottom:1px solid var(--line)}
+    .hero-bg-img{position:absolute;inset:0;background-image:url("../assets/images/firewatch/firewatch1.jpg");background-size:cover;background-position:center;filter:brightness(.18) saturate(.8)}
+    .hero-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(200,151,58,.04) 1px,transparent 1px),linear-gradient(90deg,rgba(200,151,58,.04) 1px,transparent 1px);background-size:60px 60px}
+    .hero-glow{position:absolute;width:800px;height:800px;background:radial-gradient(circle,rgba(220,80,20,.12) 0%,rgba(200,151,58,.07) 40%,transparent 70%);bottom:-300px;right:-100px;border-radius:50%}
+    .status-badge{display:inline-flex;align-items:center;gap:8px;font-family:"DM Mono",monospace;font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);border:1px solid rgba(200,151,58,.4);padding:6px 14px;border-radius:2px;margin-bottom:24px;background:rgba(200,151,58,.06)}
+    .status-dot{width:6px;height:6px;border-radius:50%;background:var(--gold);animation:blink 2s ease-in-out infinite}
+    @keyframes blink{0%,100%{opacity:1}50%{opacity:.2}}
+    .page-hero-content{position:relative;z-index:1;max-width:960px}
+    .page-eyebrow{font-family:"DM Mono",monospace;font-size:11px;letter-spacing:4px;text-transform:uppercase;color:var(--gold);margin-bottom:20px}
+    .page-title{font-family:"Bebas Neue",sans-serif;font-size:clamp(60px,10vw,130px);line-height:.9;letter-spacing:2px;color:var(--white)}
+    .page-title span{color:var(--gold)}
+    .page-subtitle{margin-top:28px;font-size:17px;font-weight:300;color:#bbb;max-width:680px;line-height:1.75}
+    .page-subtitle strong{color:var(--white);font-weight:500}
+    .page-meta{display:flex;gap:40px;margin-top:40px;flex-wrap:wrap}
+    .meta-item .meta-label{font-family:"DM Mono",monospace;font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--muted);margin-bottom:4px}
+    .meta-item .meta-value{font-size:15px;font-weight:500;color:var(--white)}
 
-    .page-content { max-width: 1200px; margin: 0 auto; padding: 80px 48px; }
-    .section-divider { width: 100%; height: 1px; background: linear-gradient(90deg, transparent, var(--gold), transparent); opacity: 0.25; margin: 72px 0; }
-    .content-label { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 4px; text-transform: uppercase; color: var(--gold); margin-bottom: 12px; display: flex; align-items: center; gap: 16px; }
-    .content-label::before { content: ''; width: 32px; height: 1px; background: var(--gold); }
-    .content-title { font-family: 'Bebas Neue', sans-serif; font-size: clamp(32px, 4vw, 54px); letter-spacing: 1px; margin-bottom: 36px; line-height: 1; }
+    .page-content{max-width:1200px;margin:0 auto;padding:80px 48px}
+    .sd{width:100%;height:1px;background:linear-gradient(90deg,transparent,var(--gold),transparent);opacity:.25;margin:72px 0}
+    .content-label{font-family:"DM Mono",monospace;font-size:10px;letter-spacing:4px;text-transform:uppercase;color:var(--gold);margin-bottom:12px;display:flex;align-items:center;gap:16px}
+    .content-label::before{content:"";width:32px;height:1px;background:var(--gold)}
+    .content-title{font-family:"Bebas Neue",sans-serif;font-size:clamp(32px,4vw,56px);letter-spacing:1px;margin-bottom:32px;line-height:1}
 
-    /* TWO DRONE LAYOUT */
-    .drones-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 4px; margin-bottom: 72px; }
-    .drone-panel { position: relative; overflow: hidden; min-height: 480px; }
-    .drone-panel img { width: 100%; height: 100%; object-fit: cover; display: block; filter: brightness(0.55); transition: filter 0.5s; }
-    .drone-panel:hover img { filter: brightness(0.7); }
-    .drone-panel-content { position: absolute; inset: 0; padding: 36px; display: flex; flex-direction: column; justify-content: flex-end; background: linear-gradient(transparent 30%, rgba(0,0,0,0.85) 100%); }
-    .drone-tag { font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 3px; text-transform: uppercase; color: var(--gold); margin-bottom: 10px; }
-    .drone-name { font-family: 'Bebas Neue', sans-serif; font-size: 36px; letter-spacing: 1px; color: var(--white); margin-bottom: 10px; }
-    .drone-desc { font-size: 13px; line-height: 1.6; color: #bbb; }
+    /* PATENT */
+    .patent-block{background:var(--dark2);border:1px solid var(--line);border-left:3px solid var(--gold);padding:28px 36px;margin-bottom:72px;display:flex;align-items:flex-start;gap:24px}
+    .patent-icon{font-size:32px;flex-shrink:0;margin-top:2px}
+    .patent-label{font-family:"DM Mono",monospace;font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-bottom:8px}
+    .patent-text{font-size:14px;line-height:1.7;color:#bbb}
+    .patent-text strong{color:var(--white);font-weight:500}
 
-    /* VISION BLOCK */
-    .vision-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 64px; }
-    .vision-copy p { font-size: 15px; line-height: 1.85; color: #bbb; margin-bottom: 18px; }
-    .vision-copy p strong { color: var(--white); font-weight: 500; }
-    .vision-points { display: flex; flex-direction: column; gap: 0; }
-    .vision-point { display: grid; grid-template-columns: 48px 1fr; gap: 20px; padding: 24px 0; border-bottom: 1px solid var(--line); align-items: start; }
-    .vision-point:first-child { border-top: 1px solid var(--line); }
-    .vp-num { font-family: 'Bebas Neue', sans-serif; font-size: 28px; color: rgba(200,151,58,0.3); line-height: 1; padding-top: 2px; }
-    .vp-title { font-family: 'DM Mono', monospace; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--gold); margin-bottom: 6px; }
-    .vp-desc { font-size: 13px; line-height: 1.6; color: #999; }
+    /* MISSION */
+    .mission-layout{display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:start}
+    .mission-copy p{font-size:15px;line-height:1.85;color:#bbb;margin-bottom:18px}
+    .mission-copy p strong{color:var(--white);font-weight:500}
+    .mission-points{display:flex;flex-direction:column;gap:0}
+    .mp{display:grid;grid-template-columns:40px 1fr;gap:18px;padding:22px 0;border-bottom:1px solid var(--line);align-items:start}
+    .mp:first-child{border-top:1px solid var(--line)}
+    .mp-num{font-family:"Bebas Neue",sans-serif;font-size:26px;color:rgba(200,151,58,.3);line-height:1;padding-top:2px}
+    .mp-title{font-family:"DM Mono",monospace;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--gold);margin-bottom:5px}
+    .mp-desc{font-size:13px;line-height:1.6;color:#999}
 
-    /* MOTHERSHIP DETAIL */
-    .mothership-layout { display: grid; grid-template-columns: 1.4fr 1fr; gap: 48px; align-items: center; }
-    .mothership-img { width: 100%; display: block; border: 1px solid var(--line); }
-    .detail-list { list-style: none; display: flex; flex-direction: column; gap: 0; }
-    .detail-item { display: flex; gap: 16px; padding: 16px 0; border-bottom: 1px solid rgba(255,255,255,0.05); align-items: flex-start; }
-    .detail-item:first-child { border-top: 1px solid rgba(255,255,255,0.05); }
-    .detail-icon { font-size: 18px; flex-shrink: 0; margin-top: 2px; }
-    .detail-text { font-size: 14px; line-height: 1.6; color: #aaa; }
-    .detail-text strong { color: var(--white); font-weight: 500; }
+    /* SYSTEM OVERVIEW */
+    .system-layout{display:grid;grid-template-columns:1.4fr 1fr;gap:48px;align-items:center}
+    .system-img{width:100%;display:block;border:1px solid var(--line);filter:brightness(.95)}
+    .system-copy p{font-size:14px;line-height:1.8;color:#bbb;margin-bottom:16px}
+    .system-copy p strong{color:var(--white);font-weight:500}
 
-    /* PAYLOAD SECTION — design stage */
-    .payload-layout { display: grid; grid-template-columns: 1fr 1.3fr; gap: 48px; align-items: start; }
-    .payload-copy p { font-size: 15px; line-height: 1.85; color: #bbb; margin-bottom: 18px; }
-    .payload-copy p strong { color: var(--white); font-weight: 500; }
-    .payload-img-wrap { position: relative; }
-    .payload-img-wrap::before { content: 'SOLIDWORKS — IN DEVELOPMENT'; position: absolute; top: 16px; left: 16px; font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 2px; color: var(--gold); background: rgba(0,0,0,0.7); padding: 4px 8px; z-index: 1; border: 1px solid var(--line); }
-    .payload-img-wrap img { width: 100%; display: block; filter: brightness(0.9); border: 1px solid var(--line); }
-    .spec-pills { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 24px; }
-    .spec-pill { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 1px; padding: 6px 14px; background: rgba(200,151,58,0.08); border: 1px solid rgba(200,151,58,0.25); color: var(--gold-light); border-radius: 2px; }
+    /* VEHICLE PANELS */
+    .vehicles-grid{display:grid;grid-template-columns:1fr 1fr;gap:4px;margin-bottom:72px}
+    .v-panel{position:relative;overflow:hidden;min-height:420px;background:var(--dark2)}
+    .v-panel img{width:100%;height:100%;object-fit:cover;display:block;filter:brightness(.45);transition:filter .5s}
+    .v-panel:hover img{filter:brightness(.6)}
+    .v-panel-content{position:absolute;inset:0;padding:32px;display:flex;flex-direction:column;justify-content:flex-end;background:linear-gradient(transparent 20%,rgba(0,0,0,.88) 100%)}
+    .v-tag{font-family:"DM Mono",monospace;font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-bottom:8px}
+    .v-name{font-family:"Bebas Neue",sans-serif;font-size:32px;letter-spacing:1px;color:var(--white);margin-bottom:8px}
+    .v-desc{font-size:13px;line-height:1.6;color:#bbb}
+    /* placeholder panel for payload */
+    .v-panel-placeholder{background:linear-gradient(135deg,#0d0d0d 0%,#140a00 50%,#0d0d0d 100%);display:flex;align-items:center;justify-content:center}
+    .v-placeholder-text{font-family:"Bebas Neue",sans-serif;font-size:80px;color:rgba(200,151,58,.07);letter-spacing:4px;text-align:center;line-height:1;user-select:none}
 
-    /* PATENT CALLOUT */
-    .patent-block { background: var(--dark2); border: 1px solid var(--line); border-left: 3px solid var(--gold); padding: 32px 40px; margin: 0 0 72px; display: flex; align-items: center; gap: 28px; }
-    .patent-icon { font-size: 36px; flex-shrink: 0; }
-    .patent-label { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 3px; text-transform: uppercase; color: var(--gold); margin-bottom: 6px; }
-    .patent-text { font-size: 15px; line-height: 1.6; color: #bbb; }
-    .patent-text strong { color: var(--white); font-weight: 500; }
+    /* STATUS CARDS */
+    .status-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+    .status-card{background:var(--dark2);border:1px solid var(--line);border-radius:2px;padding:28px 24px;transition:border-color .3s}
+    .status-card:hover{border-color:rgba(200,151,58,.45)}
+    .sc-icon{font-size:26px;margin-bottom:12px}
+    .sc-title{font-family:"DM Mono",monospace;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--gold);margin-bottom:10px}
+    .sc-desc{font-size:13px;line-height:1.65;color:#999}
+    .sc-desc strong{color:var(--white);font-weight:500}
 
-    footer { padding: 32px 48px; background: var(--dark); border-top: 1px solid var(--line); display: flex; align-items: center; justify-content: space-between; }
-    .footer-logo { font-family: 'Bebas Neue', sans-serif; font-size: 18px; letter-spacing: 3px; color: var(--white); }
-    .footer-logo span { color: var(--gold); }
-    .footer-back { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 2px; color: var(--muted); text-decoration: none; transition: color 0.3s; }
-    .footer-back:hover { color: var(--gold); }
+    /* HOW IT WORKS FLOW */
+    .flow-steps{display:flex;flex-direction:column;gap:0}
+    .flow-step{display:grid;grid-template-columns:64px 1fr;gap:24px;padding:28px 0;border-bottom:1px solid var(--line);align-items:start}
+    .flow-step:first-child{border-top:1px solid var(--line)}
+    .fs-num{font-family:"Bebas Neue",sans-serif;font-size:44px;color:rgba(200,151,58,.25);line-height:1}
+    .fs-title{font-family:"DM Mono",monospace;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--gold);margin-bottom:6px}
+    .fs-desc{font-size:14px;line-height:1.7;color:#aaa}
+    .fs-desc strong{color:var(--white);font-weight:500}
 
-    .reveal { opacity: 0; transform: translateY(30px); transition: opacity 0.7s ease, transform 0.7s ease; }
-    .reveal.visible { opacity: 1; transform: translateY(0); }
+    /* WHY DRONES */
+    .why-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+    .why-card{background:var(--dark2);border:1px solid var(--line);border-radius:2px;padding:24px 28px;display:flex;gap:16px;align-items:flex-start;transition:border-color .3s,transform .3s}
+    .why-card:hover{border-color:rgba(200,151,58,.4);transform:translateY(-2px)}
+    .why-icon{font-size:22px;flex-shrink:0}
+    .why-title{font-family:"DM Mono",monospace;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--gold);margin-bottom:5px}
+    .why-desc{font-size:13px;color:#999;line-height:1.55}
 
-    @media (max-width: 900px) {
-      nav { padding: 20px 24px; } .page-hero { padding: 100px 24px 56px; } .page-content { padding: 60px 24px; }
-      .drones-layout { grid-template-columns: 1fr; }
-      .vision-grid { grid-template-columns: 1fr; }
-      .mothership-layout { grid-template-columns: 1fr; }
-      .payload-layout { grid-template-columns: 1fr; }
-      .patent-block { flex-direction: column; gap: 16px; padding: 24px; }
-      footer { padding: 24px; }
+    footer{padding:32px 48px;background:var(--dark);border-top:1px solid var(--line);display:flex;align-items:center;justify-content:space-between}
+    .footer-logo{font-family:"Bebas Neue",sans-serif;font-size:18px;letter-spacing:3px;color:var(--white)}
+    .footer-logo span{color:var(--gold)}
+    .footer-back{font-family:"DM Mono",monospace;font-size:10px;letter-spacing:2px;color:var(--muted);text-decoration:none;transition:color .3s}
+    .footer-back:hover{color:var(--gold)}
+    .reveal{opacity:0;transform:translateY(30px);transition:opacity .7s ease,transform .7s ease}
+    .reveal.visible{opacity:1;transform:translateY(0)}
+    @media(max-width:900px){
+      nav{padding:20px 24px}.page-hero{padding:100px 24px 56px}.page-content{padding:60px 24px}
+      .mission-layout,.system-layout,.vehicles-grid,.why-grid{grid-template-columns:1fr}
+      .status-grid{grid-template-columns:1fr 1fr}
+      footer{padding:24px}
     }
   </style>
 </head>
 <body>
   <div class="cursor" id="cursor"></div>
   <div class="cursor-ring" id="cursorRing"></div>
-
   <nav>
     <a class="nav-logo" href="../index.html">ADIB <span>MAZLOOM</span></a>
     <a class="nav-back" href="../index.html">← Back to Portfolio</a>
@@ -128,178 +133,191 @@
     <div class="hero-grid"></div>
     <div class="hero-glow"></div>
     <div class="page-hero-content">
-      <div class="status-badge"><span class="status-dot"></span>Active R&D Program</div>
-      <div class="page-eyebrow">Drone Systems · Hardware Design</div>
+      <div class="status-badge"><span class="status-dot"></span>Active R&amp;D · Rev B In Progress</div>
+      <div class="page-eyebrow">Autonomous Drone System · Wildfire Response</div>
       <div class="page-title">FIRE<span>WATCH</span></div>
       <p class="page-subtitle">
-        A two-vehicle drone program — a <strong>heavy-lift mothership</strong> that carries and deploys 
-        a fleet of <strong>lightweight payload drones</strong> for coordinated autonomous operations.
+        An autonomous drone ecosystem designed to <strong>locate, map, and suppress wildfires</strong> 
+        in remote areas before they grow beyond human control. A mothership command drone 
+        coordinates a fleet of <strong>tower-launched suppression drones</strong> to deploy 
+        fire retardant at scale — buying critical time when every minute matters.
       </p>
       <div class="page-meta">
-        <div class="meta-item"><div class="meta-label">Program Type</div><div class="meta-value">Drone Systems R&D</div></div>
-        <div class="meta-item"><div class="meta-label">Vehicles</div><div class="meta-value">2 — Mothership + Payload</div></div>
+        <div class="meta-item"><div class="meta-label">Type</div><div class="meta-value">Autonomous Drone System</div></div>
+        <div class="meta-item"><div class="meta-label">Application</div><div class="meta-value">Wildfire Response</div></div>
         <div class="meta-item"><div class="meta-label">IP Status</div><div class="meta-value">Provisional Patent Filed</div></div>
-        <div class="meta-item"><div class="meta-label">Stage</div><div class="meta-value">V1 Built · Payload in Design</div></div>
+        <div class="meta-item"><div class="meta-label">Stage</div><div class="meta-value">Rev B · AI Onboard · V1 Suppressor</div></div>
       </div>
     </div>
   </div>
 
   <div class="page-content">
 
-    <!-- PATENT CALLOUT -->
     <div class="patent-block reveal">
       <div class="patent-icon">📋</div>
       <div>
         <div class="patent-label">Intellectual Property</div>
         <div class="patent-text">
-          A <strong>provisional patent has been filed</strong> for the core FireWatch drone architecture. 
-          The system design, deployment mechanism, and vehicle integration approach represent 
-          novel engineering work with protected IP status.
+          A <strong>provisional patent has been filed covering the suppression drone and launcher system</strong> — 
+          the proprietary interface between the FireWatch towers and payload drones. Additional patents 
+          for the full system architecture, mapping methodology, and coordination algorithms are in planning. 
+          This IP position is a core part of the FireWatch competitive advantage.
         </div>
       </div>
     </div>
 
-    <!-- TWO DRONES -->
-    <div class="drones-layout reveal">
-      <div class="drone-panel">
+    <!-- THE PROBLEM -->
+    <div class="mission-layout reveal">
+      <div class="mission-copy">
+        <div class="content-label">The Problem</div>
+        <div class="content-title">FIRES GROW<br>EXPONENTIALLY.<br>RESPONSE DOESN'T.</div>
+        <p>
+          California wildfires don't wait. A fire that covers 10 acres at hour one 
+          can cover 10,000 acres by hour six. The response time gap between ignition 
+          and human ground crew arrival is where fires become disasters.
+        </p>
+        <p>
+          FireWatch attacks that gap directly. <strong>You don't need to put the fire out immediately — 
+          you need to slow it down.</strong> Even a 20–30% reduction in spread rate in the first 
+          few hours can mean the difference between a contained incident and a catastrophic loss.
+        </p>
+        <p>
+          Existing aerial response requires manned aircraft, weather windows, runway access, 
+          and significant lead time. FireWatch is <strong>autonomous, tower-based, and deployable 
+          in minutes</strong> — not hours.
+        </p>
+      </div>
+      <div class="mission-points">
+        <div class="mp"><div class="mp-num">01</div><div><div class="mp-title">Speed of Response</div><div class="mp-desc">Autonomous deployment means no crew mobilization delay. Towers near fire-prone corridors can launch within minutes of detection.</div></div></div>
+        <div class="mp"><div class="mp-num">02</div><div><div class="mp-title">Scale</div><div class="mp-desc">Each tower holds up to 100 suppression drones. Multiple towers coordinate to blanket large fire fronts simultaneously.</div></div></div>
+        <div class="mp"><div class="mp-num">03</div><div><div class="mp-title">No Human Risk</div><div class="mp-desc">Fully autonomous operation. No pilots in the air, no ground crew at the fire front during the initial suppression phase.</div></div></div>
+        <div class="mp"><div class="mp-num">04</div><div><div class="mp-title">Exponential Leverage</div><div class="mp-desc">Slowing a fire at 10 acres costs a fraction of fighting it at 10,000. Early automated intervention has outsized impact.</div></div></div>
+      </div>
+    </div>
+
+    <div class="sd"></div>
+
+    <!-- HOW IT WORKS -->
+    <div class="reveal">
+      <div class="content-label">System Operation</div>
+      <div class="content-title">HOW FIREWATCH WORKS</div>
+    </div>
+    <div class="flow-steps reveal">
+      <div class="flow-step">
+        <div class="fs-num">01</div>
+        <div>
+          <div class="fs-title">Detection &amp; Dispatch</div>
+          <div class="fs-desc">Fire is detected — via satellite, existing sensor networks, or direct report. The <strong>mothership drone launches from its base</strong> and navigates autonomously to the fire location in remote terrain.</div>
+        </div>
+      </div>
+      <div class="flow-step">
+        <div class="fs-num">02</div>
+        <div>
+          <div class="fs-title">Mapping &amp; Analysis</div>
+          <div class="fs-desc">The mothership hovers over the fire perimeter using <strong>onboard AI and machine learning</strong> to map the fire boundary, analyze wind patterns, identify spread vectors, and calculate optimal suppression zones. It becomes the airborne command hub.</div>
+        </div>
+      </div>
+      <div class="flow-step">
+        <div class="fs-num">03</div>
+        <div>
+          <div class="fs-title">Tower Coordination</div>
+          <div class="fs-desc">The mothership communicates with <strong>FireWatch ground towers</strong> positioned throughout fire-risk corridors. Each tower holds up to 100 suppression drones, pre-loaded with fire retardant, ready to launch on command.</div>
+        </div>
+      </div>
+      <div class="flow-step">
+        <div class="fs-num">04</div>
+        <div>
+          <div class="fs-title">Suppression Deployment</div>
+          <div class="fs-desc">Towers launch payload drones toward the fire along <strong>AI-generated flight paths</strong>. Drones fly coordinated patterns, deploying fire suppressant across the perimeter — containing spread and reducing intensity.</div>
+        </div>
+      </div>
+      <div class="flow-step">
+        <div class="fs-num">05</div>
+        <div>
+          <div class="fs-title">Handoff to Human Crews</div>
+          <div class="fs-desc">FireWatch buys time. By the time ground crews and manned aircraft arrive, the fire's growth rate has been reduced. Human responders arrive to a <strong>more manageable, better-mapped situation</strong> with real-time data from the mothership already in hand.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="sd"></div>
+
+    <!-- TWO VEHICLES -->
+    <div class="reveal">
+      <div class="content-label">The Hardware</div>
+      <div class="content-title">THE DRONE SYSTEM</div>
+    </div>
+    <div class="vehicles-grid reveal">
+      <div class="v-panel">
         <img src="../assets/images/firewatch/firewatch1.jpg" alt="FireWatch Mothership">
-        <div class="drone-panel-content">
-          <div class="drone-tag">Vehicle 01 — Built</div>
-          <div class="drone-name">THE MOTHERSHIP</div>
-          <div class="drone-desc">Heavy-lift platform. Carries the payload drone fleet, manages power delivery, and coordinates autonomous deployment. V1 prototype complete and flying.</div>
+        <div class="v-panel-content">
+          <div class="v-tag">Vehicle 01 — Rev B In Progress</div>
+          <div class="v-name">THE MOTHERSHIP</div>
+          <div class="v-desc">Airborne command hub. Navigates to fire, maps perimeter using AI/ML, generates suppression flight paths, and coordinates the tower-launched fleet. Rev A complete and flying. Rev B underway with improved payload capacity and comms.</div>
         </div>
       </div>
-      <div class="drone-panel">
-        <img src="../assets/images/firewatch/firewatch2.jpg" alt="FireWatch Payload Drone">
-        <div class="drone-panel-content">
-          <div class="drone-tag">Vehicle 02 — In Design</div>
-          <div class="drone-name">THE PAYLOAD DRONE</div>
-          <div class="drone-desc">Lightweight, purpose-built drone optimized for rapid deployment from the mothership. SolidWorks architecture underway — designed for agility and mission flexibility.</div>
+      <div class="v-panel">
+        <div class="v-panel-placeholder">
+          <div class="v-placeholder-text">DRONE<br>V1</div>
         </div>
-      </div>
-    </div>
-
-    <!-- VISION -->
-    <div class="vision-grid reveal">
-      <div class="vision-copy">
-        <div class="content-label">The Concept</div>
-        <div class="content-title">ONE SYSTEM,<br>MANY VEHICLES</div>
-        <p>
-          Most drone programs design one vehicle for one mission. FireWatch is built around 
-          a different idea: a <strong>mothership that extends the operational range, endurance, 
-          and capability</strong> of smaller payload drones by serving as a mobile base.
-        </p>
-        <p>
-          The mothership handles the heavy lifting — power, transport, coordination. 
-          The payload drones handle the mission — lightweight, fast, deployable on demand. 
-          Together they do what neither vehicle could accomplish alone.
-        </p>
-        <p>
-          The system architecture, deployment mechanism, and vehicle integration approach 
-          are what the provisional patent covers — the core insight that makes this work.
-        </p>
-      </div>
-      <div class="vision-points">
-        <div class="vision-point">
-          <div class="vp-num">01</div>
-          <div>
-            <div class="vp-title">Extended Range</div>
-            <div class="vp-desc">Mothership transports payload drones to operational areas, dramatically extending effective range beyond battery limitations of the payload vehicles alone.</div>
-          </div>
-        </div>
-        <div class="vision-point">
-          <div class="vp-num">02</div>
-          <div>
-            <div class="vp-title">Fleet Scalability</div>
-            <div class="vp-desc">One mothership, multiple payload drones. The system scales by adding vehicles rather than replacing the entire platform.</div>
-          </div>
-        </div>
-        <div class="vision-point">
-          <div class="vp-num">03</div>
-          <div>
-            <div class="vp-title">Mission Flexibility</div>
-            <div class="vp-desc">Payload drones can be swapped for different mission profiles. The mothership platform stays constant while the payload adapts.</div>
-          </div>
-        </div>
-        <div class="vision-point">
-          <div class="vp-num">04</div>
-          <div>
-            <div class="vp-title">Autonomous Coordination</div>
-            <div class="vp-desc">Deployment, recovery, and power management designed for autonomous operation — minimal human intervention during the mission.</div>
-          </div>
+        <div class="v-panel-content">
+          <div class="v-tag">Vehicle 02 — V1 Physical Build In Progress</div>
+          <div class="v-name">SUPPRESSION DRONE</div>
+          <div class="v-desc">Tower-launched payload drone carrying fire suppressant. Designed for rapid autonomous deployment, guided flight to target zone, and coordinated release. Proprietary launcher interface is the subject of the provisional patent. First physical version currently in development.</div>
         </div>
       </div>
     </div>
 
-    <div class="section-divider"></div>
-
-    <!-- MOTHERSHIP DETAIL -->
+    <!-- STATUS -->
     <div class="reveal">
-      <div class="content-label">Vehicle 01</div>
-      <div class="content-title">MOTHERSHIP —<br>DESIGN & BUILD</div>
+      <div class="content-label">Program Status</div>
+      <div class="content-title">WHERE THINGS<br>STAND TODAY</div>
     </div>
-    <div class="mothership-layout reveal">
-      <img class="mothership-img" src="../assets/images/firewatch/firewatch1.jpg" alt="FireWatch Mothership Detail">
-      <div>
-        <ul class="detail-list">
-          <li class="detail-item">
-            <div class="detail-icon">🏗️</div>
-            <div class="detail-text"><strong>Airframe Design</strong> — Structural frame engineered for heavy-lift with payload integration points. Trade studies across materials and geometry to optimize strength-to-weight.</div>
-          </li>
-          <li class="detail-item">
-            <div class="detail-icon">⚙️</div>
-            <div class="detail-text"><strong>Propulsion System</strong> — Motor selection, mounting structures, and ESC integration sized for combined mothership + payload drone weight budget.</div>
-          </li>
-          <li class="detail-item">
-            <div class="detail-icon">⚡</div>
-            <div class="detail-text"><strong>Power Delivery</strong> — Power architecture supports both mothership flight systems and payload drone charging during transport.</div>
-          </li>
-          <li class="detail-item">
-            <div class="detail-icon">🔗</div>
-            <div class="detail-text"><strong>Payload Integration</strong> — Mechanical and electrical interface for payload drone docking, retention, and release — the core novel architecture.</div>
-          </li>
-          <li class="detail-item">
-            <div class="detail-icon">🧪</div>
-            <div class="detail-text"><strong>V1 Status</strong> — Functional prototype built and flight-tested. Structural performance and payload carrying validated. Iteration underway on integration interface.</div>
-          </li>
-        </ul>
+    <div class="status-grid reveal">
+      <div class="status-card">
+        <div class="sc-icon">🛸</div>
+        <div class="sc-title">Mothership — Rev B</div>
+        <div class="sc-desc"><strong>Rev A flew successfully.</strong> Rev B is underway — improved airframe, extended flight time, and refined command-and-control systems for coordinating larger drone fleets.</div>
+      </div>
+      <div class="status-card">
+        <div class="sc-icon">🤖</div>
+        <div class="sc-title">AI &amp; Machine Learning</div>
+        <div class="sc-desc"><strong>Software stack is operational.</strong> Onboard AI for fire mapping, perimeter detection, spread analysis, and autonomous flight path generation is set up and running on the mothership platform.</div>
+      </div>
+      <div class="status-card">
+        <div class="sc-icon">🚀</div>
+        <div class="sc-title">Suppression Drone — V1</div>
+        <div class="sc-desc">First physical build of the suppression drone is <strong>actively in development.</strong> Mechanical design in SolidWorks. Launcher interface — the core patented architecture — is the primary engineering focus.</div>
+      </div>
+      <div class="status-card">
+        <div class="sc-icon">📋</div>
+        <div class="sc-title">IP &amp; Patents</div>
+        <div class="sc-desc"><strong>Provisional patent filed</strong> on the suppression drone and tower launcher system. Additional patents planned for the full system architecture and coordination methodology.</div>
+      </div>
+      <div class="status-card">
+        <div class="sc-icon">🗼</div>
+        <div class="sc-title">Tower System</div>
+        <div class="sc-desc">Tower design concept defined — up to <strong>100 suppression drones per tower</strong>, positioned throughout high-risk fire corridors. Physical design and integration engineering is a next phase deliverable.</div>
+      </div>
+      <div class="status-card">
+        <div class="sc-icon">🔥</div>
+        <div class="sc-title">The Goal</div>
+        <div class="sc-desc">A fully autonomous, scalable wildfire response system that <strong>deploys in minutes, not hours</strong> — and gives human crews a fighting chance when fires are still small enough to manage.</div>
       </div>
     </div>
 
-    <div class="section-divider"></div>
+    <div class="sd"></div>
 
-    <!-- PAYLOAD DRONE -->
+    <!-- WHY THIS WORKS -->
     <div class="reveal">
-      <div class="content-label">Vehicle 02</div>
-      <div class="content-title">PAYLOAD DRONE —<br>IN DEVELOPMENT</div>
+      <div class="content-label">The Advantage</div>
+      <div class="content-title">WHY DRONES<br>CHANGE THIS</div>
     </div>
-    <div class="payload-layout reveal">
-      <div class="payload-copy">
-        <p>
-          The payload drone is the second vehicle in the system — currently in early design stage 
-          in SolidWorks. Where the mothership prioritizes <strong>lift capacity and endurance</strong>, 
-          the payload drone is optimized for <strong>agility, low weight, and mission adaptability</strong>.
-        </p>
-        <p>
-          The design constraints are driven by the integration interface with the mothership — 
-          the payload drone has to fit, dock, undock, and operate within the power and 
-          weight budget the mothership can support.
-        </p>
-        <p>
-          This is an active design effort. The architecture is defined; the detailed 
-          mechanical design is in progress.
-        </p>
-        <div class="spec-pills">
-          <span class="spec-pill">Lightweight Airframe</span>
-          <span class="spec-pill">Rapid Deployment</span>
-          <span class="spec-pill">Mothership Interface</span>
-          <span class="spec-pill">Mission Modular</span>
-          <span class="spec-pill">SolidWorks — Active</span>
-        </div>
-      </div>
-      <div class="payload-img-wrap">
-        <img src="../assets/images/firewatch/firewatch2.jpg" alt="Payload Drone SolidWorks">
-      </div>
+    <div class="why-grid reveal">
+      <div class="why-card"><div class="why-icon">⚡</div><div><div class="why-title">Instant Deployment</div><div class="why-desc">No crew briefing, no flight planning delays, no weather hold. Tower-launched drones are airborne within minutes of a fire call.</div></div></div>
+      <div class="why-card"><div class="why-icon">🗺️</div><div><div class="why-title">Real-Time Mapping</div><div class="why-desc">The mothership's AI builds a live fire map that updates continuously — something no manned aircraft can provide at the same cost and persistence.</div></div></div>
+      <div class="why-card"><div class="why-icon">🔢</div><div><div class="why-title">Overwhelming Numbers</div><div class="why-desc">100 drones per tower. Multiple towers per region. The system scales in a way that manned aircraft never can — more units means more suppressant on target, faster.</div></div></div>
+      <div class="why-card"><div class="why-icon">🛡️</div><div><div class="why-title">Zero Human Risk</div><div class="why-desc">Initial suppression is fully autonomous. Human crews only engage after FireWatch has reduced the immediate danger and provided real-time intelligence.</div></div></div>
     </div>
 
   </div>
@@ -310,18 +328,11 @@
   </footer>
 
   <script>
-    const cursor = document.getElementById('cursor');
-    const ring = document.getElementById('cursorRing');
-    let mx = 0, my = 0;
-    document.addEventListener('mousemove', e => {
-      mx = e.clientX; my = e.clientY;
-      cursor.style.transform = `translate(${mx - 5}px, ${my - 5}px)`;
-      ring.style.transform = `translate(${mx - 18}px, ${my - 18}px)`;
-    });
-    const observer = new IntersectionObserver(entries => {
-      entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
-    }, { threshold: 0.1 });
-    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+    const cursor=document.getElementById("cursor"),ring=document.getElementById("cursorRing");
+    let mx=0,my=0;
+    document.addEventListener("mousemove",e=>{mx=e.clientX;my=e.clientY;cursor.style.transform=`translate(${mx-5}px,${my-5}px)`;ring.style.transform=`translate(${mx-18}px,${my-18}px)`});
+    const observer=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add("visible")})},{threshold:.1});
+    document.querySelectorAll(".reveal").forEach(el=>observer.observe(el));
   </script>
 </body>
 </html>
