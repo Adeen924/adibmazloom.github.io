@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Poker Stats Tracker — Adib Mazloom</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --gold: #C8973A; --gold-light: #E8B860;
+      --dark: #0A0A0A; --dark2: #111111; --dark3: #181818;
+      --white: #F5F2ED; --muted: #888; --line: rgba(200,151,58,0.2);
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'DM Sans', sans-serif; background: var(--dark); color: var(--white); overflow-x: hidden; cursor: none; }
+    .cursor { width: 10px; height: 10px; border-radius: 50%; background: var(--gold); position: fixed; top: 0; left: 0; pointer-events: none; z-index: 9999; }
+    .cursor-ring { width: 36px; height: 36px; border-radius: 50%; border: 1px solid var(--gold); position: fixed; top: 0; left: 0; pointer-events: none; z-index: 9998; transition: width 0.3s, height 0.3s, opacity 0.3s; opacity: 0.5; }
+    nav { position: fixed; top: 0; width: 100%; padding: 22px 48px; display: flex; align-items: center; justify-content: space-between; z-index: 100; background: rgba(10,10,10,0.95); backdrop-filter: blur(12px); border-bottom: 1px solid var(--line); }
+    .nav-logo { font-family: 'Bebas Neue', sans-serif; font-size: 22px; letter-spacing: 3px; color: var(--white); text-decoration: none; }
+    .nav-logo span { color: var(--gold); }
+    .nav-back { font-family: 'DM Mono', monospace; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--muted); text-decoration: none; transition: color 0.3s; }
+    .nav-back:hover { color: var(--gold); }
+
+    /* HERO — app-style dark with logo */
+    .page-hero { min-height: 65vh; display: flex; flex-direction: column; justify-content: flex-end; padding: 120px 48px 72px; position: relative; overflow: hidden; background: #0d0a06; border-bottom: 1px solid var(--line); }
+    .hero-grid { position: absolute; inset: 0; background-image: linear-gradient(rgba(200,151,58,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(200,151,58,0.03) 1px, transparent 1px); background-size: 60px 60px; }
+    .hero-glow { position: absolute; width: 600px; height: 600px; background: radial-gradient(circle, rgba(200,151,58,0.08) 0%, transparent 65%); bottom: -200px; right: -100px; border-radius: 50%; }
+    .hero-logo { position: absolute; top: 50%; right: 10%; transform: translateY(-60%); opacity: 0.12; width: 280px; height: 280px; object-fit: contain; }
+    .page-hero-content { position: relative; z-index: 1; max-width: 860px; }
+    .page-eyebrow { font-family: 'DM Mono', monospace; font-size: 11px; letter-spacing: 4px; text-transform: uppercase; color: var(--gold); margin-bottom: 20px; }
+    .page-title { font-family: 'Bebas Neue', sans-serif; font-size: clamp(52px, 8vw, 110px); line-height: 0.92; letter-spacing: 2px; color: var(--white); }
+    .page-title span { color: var(--gold); }
+    .page-subtitle { margin-top: 28px; font-size: 17px; font-weight: 300; color: #bbb; max-width: 580px; line-height: 1.7; }
+    .page-subtitle strong { color: var(--white); font-weight: 500; }
+    .page-meta { display: flex; gap: 40px; margin-top: 40px; flex-wrap: wrap; }
+    .meta-item .meta-label { font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 3px; text-transform: uppercase; color: var(--muted); margin-bottom: 4px; }
+    .meta-item .meta-value { font-size: 15px; font-weight: 500; color: var(--white); }
+
+    .page-content { max-width: 1200px; margin: 0 auto; padding: 80px 48px; }
+    .section-divider { width: 100%; height: 1px; background: linear-gradient(90deg, transparent, var(--gold), transparent); opacity: 0.25; margin: 72px 0; }
+    .content-label { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 4px; text-transform: uppercase; color: var(--gold); margin-bottom: 12px; display: flex; align-items: center; gap: 16px; }
+    .content-label::before { content: ''; width: 32px; height: 1px; background: var(--gold); }
+    .content-title { font-family: 'Bebas Neue', sans-serif; font-size: clamp(32px, 4vw, 54px); letter-spacing: 1px; margin-bottom: 36px; line-height: 1; }
+
+    /* OVERVIEW */
+    .overview-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 64px; align-items: start; }
+    .overview-copy p { font-size: 15px; line-height: 1.85; color: #bbb; margin-bottom: 18px; }
+    .overview-copy p strong { color: var(--white); font-weight: 500; }
+    .logo-display { display: flex; flex-direction: column; align-items: center; gap: 24px; }
+    .logo-display img { width: 180px; height: 180px; object-fit: contain; border: 1px solid var(--line); padding: 24px; background: var(--dark2); }
+    .logo-name { font-family: 'Bebas Neue', sans-serif; font-size: 28px; letter-spacing: 3px; color: var(--gold); }
+    .skill-pills { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; margin-top: 8px; }
+    .skill-pill { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 1px; padding: 5px 12px; background: rgba(200,151,58,0.08); border: 1px solid rgba(200,151,58,0.25); color: var(--gold-light); border-radius: 2px; }
+
+    /* PHONE MOCKUP GALLERY */
+    .screens-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 16px; align-items: end; }
+    .screen-wrap { display: flex; flex-direction: column; align-items: center; gap: 12px; }
+    .screen-wrap img { width: 100%; border: 1px solid var(--line); border-radius: 8px; display: block; transition: transform 0.4s ease, filter 0.4s; filter: brightness(0.9); box-shadow: 0 8px 40px rgba(0,0,0,0.5); }
+    .screen-wrap:hover img { transform: translateY(-8px); filter: brightness(1); }
+    .screen-wrap:nth-child(3) img { transform: translateY(-12px); }
+    .screen-wrap:nth-child(3):hover img { transform: translateY(-20px); }
+    .screen-label { font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 2px; text-transform: uppercase; color: var(--muted); text-align: center; }
+
+    /* FEATURE GRID */
+    .features-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+    .feature-card { background: var(--dark2); border: 1px solid var(--line); border-radius: 2px; padding: 28px 24px; transition: border-color 0.3s, transform 0.3s; }
+    .feature-card:hover { border-color: rgba(200,151,58,0.4); transform: translateY(-2px); }
+    .feature-icon { font-size: 26px; margin-bottom: 12px; }
+    .feature-title { font-family: 'DM Mono', monospace; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--gold); margin-bottom: 10px; }
+    .feature-desc { font-size: 13px; line-height: 1.65; color: #999; }
+
+    /* WHAT THIS SHOWS */
+    .shows-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .shows-item { background: var(--dark2); border: 1px solid var(--line); border-radius: 2px; padding: 24px 28px; display: flex; gap: 16px; align-items: flex-start; }
+    .shows-icon { font-size: 22px; flex-shrink: 0; }
+    .shows-title { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: var(--gold); margin-bottom: 6px; }
+    .shows-desc { font-size: 13px; color: #999; line-height: 1.55; }
+
+    footer { padding: 32px 48px; background: var(--dark); border-top: 1px solid var(--line); display: flex; align-items: center; justify-content: space-between; }
+    .footer-logo { font-family: 'Bebas Neue', sans-serif; font-size: 18px; letter-spacing: 3px; color: var(--white); }
+    .footer-logo span { color: var(--gold); }
+    .footer-back { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 2px; color: var(--muted); text-decoration: none; transition: color 0.3s; }
+    .footer-back:hover { color: var(--gold); }
+
+    .reveal { opacity: 0; transform: translateY(30px); transition: opacity 0.7s ease, transform 0.7s ease; }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+
+    @media (max-width: 1024px) { .screens-grid { grid-template-columns: repeat(3, 1fr); } }
+    @media (max-width: 900px) {
+      nav { padding: 20px 24px; } .page-hero { padding: 100px 24px 56px; } .page-content { padding: 60px 24px; }
+      .overview-layout { grid-template-columns: 1fr; }
+      .features-grid { grid-template-columns: 1fr 1fr; }
+      .shows-grid { grid-template-columns: 1fr; }
+      .screens-grid { grid-template-columns: repeat(2, 1fr); }
+      footer { padding: 24px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="cursor" id="cursor"></div>
+  <div class="cursor-ring" id="cursorRing"></div>
+
+  <nav>
+    <a class="nav-logo" href="../index.html">ADIB <span>MAZLOOM</span></a>
+    <a class="nav-back" href="../index.html">← Back to Portfolio</a>
+  </nav>
+
+  <div class="page-hero">
+    <div class="hero-grid"></div>
+    <div class="hero-glow"></div>
+    <img class="hero-logo" src="../assets/images/poker/poker-logo.png" alt="Poker Stats Logo">
+    <div class="page-hero-content">
+      <div class="page-eyebrow">Mobile App · React · Product Design</div>
+      <div class="page-title">POKER<br><span>STATS TRACKER</span></div>
+      <p class="page-subtitle">
+        A <strong>full-featured mobile app</strong> built in React for tracking poker session 
+        stats, bankroll, and performance over time — designed, built, and shipped independently 
+        from concept to live app.
+      </p>
+      <div class="page-meta">
+        <div class="meta-item"><div class="meta-label">Type</div><div class="meta-value">Mobile App — React</div></div>
+        <div class="meta-item"><div class="meta-label">Focus</div><div class="meta-value">Product Design + UI/UX</div></div>
+        <div class="meta-item"><div class="meta-label">Built By</div><div class="meta-value">Solo — Design to Launch</div></div>
+        <div class="meta-item"><div class="meta-label">Status</div><div class="meta-value">Live</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="page-content">
+
+    <!-- OVERVIEW -->
+    <div class="overview-layout reveal">
+      <div class="overview-copy">
+        <div class="content-label">The Idea</div>
+        <div class="content-title">BUILT BECAUSE<br>IT DIDN'T EXIST</div>
+        <p>
+          Most poker tracking apps are overcomplicated, ugly, or both. 
+          I wanted something <strong>fast to log, clear to read, and actually useful 
+          for understanding your game</strong> — so I built it.
+        </p>
+        <p>
+          The Poker Stats Tracker lets you log sessions in seconds, tracks your bankroll 
+          over time, breaks down performance by game type and location, and surfaces the 
+          patterns that tell you where you're making and losing money.
+        </p>
+        <p>
+          This project isn't about poker — it's about <strong>identifying a problem, 
+          designing a solution, building it end-to-end, and shipping it</strong>. 
+          The same process I apply to every hardware program, just in a different medium.
+        </p>
+      </div>
+      <div class="logo-display">
+        <img src="../assets/images/poker/poker-logo.png" alt="Poker Stats Tracker Logo">
+        <div class="logo-name">POKER STATS TRACKER</div>
+        <div class="skill-pills">
+          <span class="skill-pill">React Native</span>
+          <span class="skill-pill">JavaScript</span>
+          <span class="skill-pill">UI/UX Design</span>
+          <span class="skill-pill">Data Viz</span>
+          <span class="skill-pill">Solo Built</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="section-divider"></div>
+
+    <!-- SCREENS -->
+    <div class="reveal">
+      <div class="content-label">App Screenshots</div>
+      <div class="content-title">THE PRODUCT</div>
+    </div>
+    <div class="screens-grid reveal">
+      <div class="screen-wrap">
+        <img src="../assets/images/poker/poker1.jpg" alt="Home Screen">
+        <div class="screen-label">Dashboard</div>
+      </div>
+      <div class="screen-wrap">
+        <img src="../assets/images/poker/poker2.jpg" alt="Session Log">
+        <div class="screen-label">Session Log</div>
+      </div>
+      <div class="screen-wrap">
+        <img src="../assets/images/poker/poker3.jpg" alt="Stats View">
+        <div class="screen-label">Analytics</div>
+      </div>
+      <div class="screen-wrap">
+        <img src="../assets/images/poker/poker4.jpg" alt="Bankroll Chart">
+        <div class="screen-label">Bankroll</div>
+      </div>
+      <div class="screen-wrap">
+        <img src="../assets/images/poker/poker5.jpg" alt="Add Session">
+        <div class="screen-label">Add Session</div>
+      </div>
+    </div>
+
+    <div class="section-divider"></div>
+
+    <!-- FEATURES -->
+    <div class="reveal">
+      <div class="content-label">Features</div>
+      <div class="content-title">WHAT IT DOES</div>
+    </div>
+    <div class="features-grid reveal">
+      <div class="feature-card">
+        <div class="feature-icon">⚡</div>
+        <div class="feature-title">Fast Session Logging</div>
+        <div class="feature-desc">Log a session in under 30 seconds. Game type, location, buy-in, cash-out, duration — all captured with minimal friction.</div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">📈</div>
+        <div class="feature-title">Bankroll Tracking</div>
+        <div class="feature-desc">Live bankroll chart shows your trajectory over time. Running total, session P&L, and trend lines at a glance.</div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">📊</div>
+        <div class="feature-title">Performance Analytics</div>
+        <div class="feature-desc">Win rate, hourly rate, average session P&L, best and worst sessions — broken down by game type, stakes, and location.</div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🗂️</div>
+        <div class="feature-title">Session History</div>
+        <div class="feature-desc">Full searchable session log with filters. See every session, edit entries, and spot patterns across your history.</div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🎨</div>
+        <div class="feature-title">Clean UI</div>
+        <div class="feature-desc">Designed from the ground up to be readable and intuitive. No clutter, no confusion — just the numbers that matter.</div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">📱</div>
+        <div class="feature-title">Mobile Native</div>
+        <div class="feature-desc">Built in React Native — runs natively on iOS. Designed for the table: fast to open, fast to log, fast to close.</div>
+      </div>
+    </div>
+
+    <div class="section-divider"></div>
+
+    <!-- WHAT THIS SHOWS -->
+    <div class="reveal">
+      <div class="content-label">Why It Matters</div>
+      <div class="content-title">WHAT THIS<br>DEMONSTRATES</div>
+    </div>
+    <div class="shows-grid reveal">
+      <div class="shows-item">
+        <div class="shows-icon">🏗️</div>
+        <div>
+          <div class="shows-title">Full Product Ownership</div>
+          <div class="shows-desc">Took an idea from zero to a live, usable product — scoping, designing, building, and iterating without a team.</div>
+        </div>
+      </div>
+      <div class="shows-item">
+        <div class="shows-icon">🎨</div>
+        <div>
+          <div class="shows-title">UI/UX Design Sense</div>
+          <div class="shows-desc">Designed the full interface — information hierarchy, interaction patterns, visual language. Not just functional code.</div>
+        </div>
+      </div>
+      <div class="shows-item">
+        <div class="shows-icon">⚙️</div>
+        <div>
+          <div class="shows-title">React Native Development</div>
+          <div class="shows-desc">Built and shipped a real app in React Native — state management, navigation, data persistence, and charting.</div>
+        </div>
+      </div>
+      <div class="shows-item">
+        <div class="shows-icon">🔍</div>
+        <div>
+          <div class="shows-title">Problem → Solution Thinking</div>
+          <div class="shows-desc">Identified a real gap in available tools, defined the requirements, and built exactly what the problem needed.</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <footer>
+    <div class="footer-logo">ADIB <span>MAZLOOM</span></div>
+    <a class="footer-back" href="../index.html">← Back to Portfolio</a>
+  </footer>
+
+  <script>
+    const cursor = document.getElementById('cursor');
+    const ring = document.getElementById('cursorRing');
+    let mx = 0, my = 0;
+    document.addEventListener('mousemove', e => {
+      mx = e.clientX; my = e.clientY;
+      cursor.style.transform = `translate(${mx - 5}px, ${my - 5}px)`;
+      ring.style.transform = `translate(${mx - 18}px, ${my - 18}px)`;
+    });
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+    }, { threshold: 0.1 });
+    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+  </script>
+</body>
+</html>

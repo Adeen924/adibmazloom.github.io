@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TrackTechPro — Adib Mazloom</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --gold: #C8973A; --gold-light: #E8B860;
+      --dark: #0A0A0A; --dark2: #111111; --dark3: #181818;
+      --white: #F5F2ED; --muted: #888; --line: rgba(200,151,58,0.2);
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'DM Sans', sans-serif; background: var(--dark); color: var(--white); overflow-x: hidden; cursor: none; }
+    .cursor { width: 10px; height: 10px; border-radius: 50%; background: var(--gold); position: fixed; top: 0; left: 0; pointer-events: none; z-index: 9999; }
+    .cursor-ring { width: 36px; height: 36px; border-radius: 50%; border: 1px solid var(--gold); position: fixed; top: 0; left: 0; pointer-events: none; z-index: 9998; transition: width 0.3s, height 0.3s, opacity 0.3s; opacity: 0.5; }
+    nav { position: fixed; top: 0; width: 100%; padding: 22px 48px; display: flex; align-items: center; justify-content: space-between; z-index: 100; background: rgba(10,10,10,0.95); backdrop-filter: blur(12px); border-bottom: 1px solid var(--line); }
+    .nav-logo { font-family: 'Bebas Neue', sans-serif; font-size: 22px; letter-spacing: 3px; color: var(--white); text-decoration: none; }
+    .nav-logo span { color: var(--gold); }
+    .nav-back { font-family: 'DM Mono', monospace; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--muted); text-decoration: none; transition: color 0.3s; }
+    .nav-back:hover { color: var(--gold); }
+
+    .page-hero { min-height: 65vh; display: flex; flex-direction: column; justify-content: flex-end; padding: 120px 48px 72px; position: relative; overflow: hidden; background: var(--dark2); border-bottom: 1px solid var(--line); }
+    .hero-bg-img { position: absolute; inset: 0; background-image: url('../assets/images/tracktechpro/tracktechpro1.jpg'); background-size: cover; background-position: center; filter: brightness(0.18) grayscale(20%); }
+    .hero-grid { position: absolute; inset: 0; background-image: linear-gradient(rgba(200,151,58,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(200,151,58,0.03) 1px, transparent 1px); background-size: 60px 60px; }
+    .hero-glow { position: absolute; width: 500px; height: 500px; background: radial-gradient(circle, rgba(200,151,58,0.1) 0%, transparent 70%); top: -100px; left: -100px; border-radius: 50%; }
+    .page-hero-content { position: relative; z-index: 1; max-width: 860px; }
+    .page-eyebrow { font-family: 'DM Mono', monospace; font-size: 11px; letter-spacing: 4px; text-transform: uppercase; color: var(--gold); margin-bottom: 20px; }
+    .page-title { font-family: 'Bebas Neue', sans-serif; font-size: clamp(52px, 8vw, 110px); line-height: 0.92; letter-spacing: 2px; color: var(--white); }
+    .page-title span { color: var(--gold); }
+    .page-subtitle { margin-top: 28px; font-size: 17px; font-weight: 300; color: #bbb; max-width: 580px; line-height: 1.7; }
+    .page-subtitle strong { color: var(--white); font-weight: 500; }
+    .page-meta { display: flex; gap: 40px; margin-top: 40px; flex-wrap: wrap; }
+    .meta-item .meta-label { font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 3px; text-transform: uppercase; color: var(--muted); margin-bottom: 4px; }
+    .meta-item .meta-value { font-size: 15px; font-weight: 500; color: var(--white); }
+
+    .page-content { max-width: 1100px; margin: 0 auto; padding: 80px 48px; }
+    .section-divider { width: 100%; height: 1px; background: linear-gradient(90deg, transparent, var(--gold), transparent); opacity: 0.25; margin: 72px 0; }
+    .content-label { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 4px; text-transform: uppercase; color: var(--gold); margin-bottom: 12px; display: flex; align-items: center; gap: 16px; }
+    .content-label::before { content: ''; width: 32px; height: 1px; background: var(--gold); }
+    .content-title { font-family: 'Bebas Neue', sans-serif; font-size: clamp(32px, 4vw, 54px); letter-spacing: 1px; margin-bottom: 36px; line-height: 1; }
+
+    /* OVERVIEW */
+    .overview-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 64px; align-items: start; }
+    .overview-copy p { font-size: 15px; line-height: 1.85; color: #bbb; margin-bottom: 18px; }
+    .overview-copy p strong { color: var(--white); font-weight: 500; }
+    .overview-img { width: 100%; display: block; border: 1px solid var(--line); }
+
+    /* SYSTEM DIAGRAM */
+    .system-flow { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0; position: relative; margin: 48px 0; }
+    .flow-step { background: var(--dark2); border: 1px solid var(--line); padding: 24px 20px; text-align: center; position: relative; transition: border-color 0.3s; }
+    .flow-step:not(:last-child)::after { content: '→'; position: absolute; right: -14px; top: 50%; transform: translateY(-50%); color: var(--gold); font-size: 18px; z-index: 1; }
+    .flow-step:hover { border-color: rgba(200,151,58,0.5); }
+    .flow-icon { font-size: 28px; margin-bottom: 12px; }
+    .flow-label { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: var(--gold); margin-bottom: 6px; }
+    .flow-desc { font-size: 12px; color: #777; line-height: 1.4; }
+
+    /* PHOTO GRID */
+    .photo-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4px; }
+    .photo-item { overflow: hidden; }
+    .photo-item.tall { grid-row: span 2; }
+    .photo-item img { width: 100%; height: 100%; object-fit: cover; display: block; aspect-ratio: 4/3; transition: transform 0.5s, filter 0.5s; filter: brightness(0.9); }
+    .photo-item.tall img { aspect-ratio: unset; height: 100%; }
+    .photo-item:hover img { transform: scale(1.03); filter: brightness(1); }
+
+    /* TECH BREAKDOWN */
+    .tech-cols { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; }
+    .tech-col { background: var(--dark2); border: 1px solid var(--line); border-radius: 2px; padding: 28px 24px; }
+    .tech-col-icon { font-size: 28px; margin-bottom: 14px; }
+    .tech-col-title { font-family: 'DM Mono', monospace; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--gold); margin-bottom: 14px; }
+    .tech-col ul { list-style: none; display: flex; flex-direction: column; gap: 8px; }
+    .tech-col ul li { font-size: 13px; color: #aaa; padding-left: 14px; position: relative; line-height: 1.4; }
+    .tech-col ul li::before { content: '·'; position: absolute; left: 0; color: var(--gold); }
+
+    /* CODE SNIPPET */
+    .code-block { background: #0d0d0d; border: 1px solid var(--line); border-radius: 2px; padding: 28px 32px; font-family: 'DM Mono', monospace; font-size: 13px; line-height: 1.8; color: #bbb; overflow-x: auto; }
+    .code-comment { color: #555; }
+    .code-keyword { color: var(--gold); }
+    .code-string { color: #7ec8a0; }
+    .code-num { color: #e8b860; }
+
+    footer { padding: 32px 48px; background: var(--dark); border-top: 1px solid var(--line); display: flex; align-items: center; justify-content: space-between; }
+    .footer-logo { font-family: 'Bebas Neue', sans-serif; font-size: 18px; letter-spacing: 3px; color: var(--white); }
+    .footer-logo span { color: var(--gold); }
+    .footer-back { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 2px; color: var(--muted); text-decoration: none; transition: color 0.3s; }
+    .footer-back:hover { color: var(--gold); }
+
+    .reveal { opacity: 0; transform: translateY(30px); transition: opacity 0.7s ease, transform 0.7s ease; }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+
+    @media (max-width: 900px) {
+      nav { padding: 20px 24px; } .page-hero { padding: 100px 24px 56px; } .page-content { padding: 60px 24px; }
+      .overview-layout { grid-template-columns: 1fr; }
+      .system-flow { grid-template-columns: 1fr 1fr; }
+      .flow-step::after { display: none; }
+      .tech-cols { grid-template-columns: 1fr; }
+      footer { padding: 24px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="cursor" id="cursor"></div>
+  <div class="cursor-ring" id="cursorRing"></div>
+
+  <nav>
+    <a class="nav-logo" href="../index.html">ADIB <span>MAZLOOM</span></a>
+    <a class="nav-back" href="../index.html">← Back to Portfolio</a>
+  </nav>
+
+  <div class="page-hero">
+    <div class="hero-bg-img"></div>
+    <div class="hero-grid"></div>
+    <div class="hero-glow"></div>
+    <div class="page-hero-content">
+      <div class="page-eyebrow">Embedded Systems · Hardware + Software</div>
+      <div class="page-title">TRACK<br><span>TECH PRO</span></div>
+      <p class="page-subtitle">
+        A standalone <strong>PCB-based data acquisition system</strong> built to measure 
+        and log brake pad temperatures in real time — hardware designed, firmware written, 
+        and installed on-vehicle.
+      </p>
+      <div class="page-meta">
+        <div class="meta-item"><div class="meta-label">Type</div><div class="meta-value">Embedded Hardware + Firmware</div></div>
+        <div class="meta-item"><div class="meta-label">Domain</div><div class="meta-value">Automotive / Motorsport</div></div>
+        <div class="meta-item"><div class="meta-label">Stack</div><div class="meta-value">Custom PCB · Sensors · Display</div></div>
+        <div class="meta-item"><div class="meta-label">Status</div><div class="meta-value">Completed</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="page-content">
+
+    <!-- OVERVIEW -->
+    <div class="overview-layout reveal">
+      <div class="overview-copy">
+        <div class="content-label">The Problem</div>
+        <div class="content-title">YOU CAN'T<br>MANAGE WHAT<br>YOU CAN'T MEASURE</div>
+        <p>
+          Brake pad temperature is one of the most critical and least monitored parameters 
+          in performance driving. Pads operating above their thermal threshold experience 
+          rapid degradation, fade, and failure — but most drivers have <strong>no real-time 
+          visibility into what's happening at the rotor</strong>.
+        </p>
+        <p>
+          TrackTechPro was built to fix that. A custom PCB system with temperature sensors 
+          at each corner, a real-time LCD display, and data logging — <strong>designed, 
+          built, and installed from scratch</strong>.
+        </p>
+        <p>
+          This wasn't a kit. Every hardware decision — PCB layout, sensor selection, 
+          power management, display interface — was made and executed independently.
+        </p>
+      </div>
+      <img class="overview-img" src="../assets/images/tracktechpro/tracktechpro1.jpg" alt="TrackTechPro LCD Display">
+    </div>
+
+    <div class="section-divider"></div>
+
+    <!-- SYSTEM FLOW -->
+    <div class="reveal">
+      <div class="content-label">System Architecture</div>
+      <div class="content-title">HOW IT WORKS</div>
+    </div>
+    <div class="system-flow reveal">
+      <div class="flow-step">
+        <div class="flow-icon">🌡️</div>
+        <div class="flow-label">Sense</div>
+        <div class="flow-desc">Thermocouples at each brake corner measure pad & rotor temp in real time</div>
+      </div>
+      <div class="flow-step">
+        <div class="flow-icon">⚙️</div>
+        <div class="flow-label">Process</div>
+        <div class="flow-desc">Custom PCB reads sensor signals, conditions data, and runs logic</div>
+      </div>
+      <div class="flow-step">
+        <div class="flow-icon">📺</div>
+        <div class="flow-label">Display</div>
+        <div class="flow-desc">LCD shows live temperature readings — visible to driver while moving</div>
+      </div>
+      <div class="flow-step">
+        <div class="flow-icon">💾</div>
+        <div class="flow-label">Log</div>
+        <div class="flow-desc">Session data logged for post-run analysis and thermal model correlation</div>
+      </div>
+    </div>
+
+    <!-- PHOTO GRID -->
+    <div class="photo-grid reveal">
+      <div class="photo-item tall">
+        <img src="../assets/images/tracktechpro/tracktechpro1.jpg" alt="LCD Display">
+      </div>
+      <div class="photo-item">
+        <img src="../assets/images/tracktechpro/tracktechpro2.jpg" alt="PCB and Electronics">
+      </div>
+      <div class="photo-item">
+        <img src="../assets/images/tracktechpro/tracktechpro3.jpg" alt="Vehicle Installation">
+      </div>
+    </div>
+
+    <div class="section-divider"></div>
+
+    <!-- TECH BREAKDOWN -->
+    <div class="reveal">
+      <div class="content-label">Under the Hood</div>
+      <div class="content-title">TECHNICAL BREAKDOWN</div>
+    </div>
+    <div class="tech-cols reveal">
+      <div class="tech-col">
+        <div class="tech-col-icon">🔌</div>
+        <div class="tech-col-title">Hardware</div>
+        <ul>
+          <li>Custom PCB — designed and fabricated</li>
+          <li>Thermocouple inputs at each corner</li>
+          <li>Signal conditioning and amplification</li>
+          <li>On-board power regulation</li>
+          <li>LCD display interface</li>
+          <li>SD card data logging</li>
+        </ul>
+      </div>
+      <div class="tech-col">
+        <div class="tech-col-icon">💻</div>
+        <div class="tech-col-title">Firmware</div>
+        <ul>
+          <li>Embedded C firmware</li>
+          <li>Real-time sensor polling loop</li>
+          <li>Temperature thresholds and alerts</li>
+          <li>Display rendering and refresh</li>
+          <li>Data formatting and SD write</li>
+          <li>Power-on calibration routine</li>
+        </ul>
+      </div>
+      <div class="tech-col">
+        <div class="tech-col-icon">🚗</div>
+        <div class="tech-col-title">Installation</div>
+        <ul>
+          <li>Sensor routing to all four corners</li>
+          <li>Chassis-mounted PCB enclosure</li>
+          <li>Display positioned in driver sightline</li>
+          <li>Fused 12V power tap from vehicle</li>
+          <li>Vibration-isolated mounting</li>
+          <li>Weatherproofed sensor connections</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="section-divider"></div>
+
+    <!-- CODE SAMPLE -->
+    <div class="reveal">
+      <div class="content-label">Firmware Sample</div>
+      <div class="content-title">THE CODE</div>
+    </div>
+    <div class="code-block reveal">
+<span class="code-comment">// TrackTechPro — Brake Temperature Monitor</span>
+<span class="code-comment">// Real-time thermocouple read loop with display update</span>
+
+<span class="code-keyword">void</span> loop() {
+  <span class="code-keyword">float</span> fl_temp = readThermocouple(PIN_FL);
+  <span class="code-keyword">float</span> fr_temp = readThermocouple(PIN_FR);
+  <span class="code-keyword">float</span> rl_temp = readThermocouple(PIN_RL);
+  <span class="code-keyword">float</span> rr_temp = readThermocouple(PIN_RR);
+
+  <span class="code-comment">// Check against threshold — alert if overtemp</span>
+  <span class="code-keyword">if</span> (fl_temp > TEMP_WARN || fr_temp > TEMP_WARN) {
+    triggerAlert(ALERT_FRONT);
+  }
+
+  <span class="code-comment">// Render to LCD</span>
+  lcd.setCursor(<span class="code-num">0</span>, <span class="code-num">0</span>);
+  lcd.print(<span class="code-string">"FL:"</span>); lcd.print(fl_temp, <span class="code-num">1</span>);
+  lcd.print(<span class="code-string">"  FR:"</span>); lcd.print(fr_temp, <span class="code-num">1</span>);
+  lcd.setCursor(<span class="code-num">0</span>, <span class="code-num">1</span>);
+  lcd.print(<span class="code-string">"RL:"</span>); lcd.print(rl_temp, <span class="code-num">1</span>);
+  lcd.print(<span class="code-string">"  RR:"</span>); lcd.print(rr_temp, <span class="code-num">1</span>);
+
+  <span class="code-comment">// Log to SD card every 500ms</span>
+  <span class="code-keyword">if</span> (millis() - lastLog > <span class="code-num">500</span>) {
+    logToSD(fl_temp, fr_temp, rl_temp, rr_temp);
+    lastLog = millis();
+  }
+
+  delay(<span class="code-num">100</span>);
+}
+    </div>
+
+  </div>
+
+  <footer>
+    <div class="footer-logo">ADIB <span>MAZLOOM</span></div>
+    <a class="footer-back" href="../index.html">← Back to Portfolio</a>
+  </footer>
+
+  <script>
+    const cursor = document.getElementById('cursor');
+    const ring = document.getElementById('cursorRing');
+    let mx = 0, my = 0;
+    document.addEventListener('mousemove', e => {
+      mx = e.clientX; my = e.clientY;
+      cursor.style.transform = `translate(${mx - 5}px, ${my - 5}px)`;
+      ring.style.transform = `translate(${mx - 18}px, ${my - 18}px)`;
+    });
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+    }, { threshold: 0.1 });
+    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+  </script>
+</body>
+</html>
