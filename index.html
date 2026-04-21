@@ -682,6 +682,44 @@
       .nav-links { display: none; }
       .about-values { grid-template-columns: 1fr; }
     }
+
+    /* GARAGE PHOTOS */
+    .garage-photos {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4px;
+      margin-top: 40px;
+      max-width: 640px;
+    }
+    .garage-photo {
+      position: relative;
+      overflow: hidden;
+      aspect-ratio: 4/3;
+      background: var(--dark2);
+    }
+    .garage-photo img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      filter: brightness(0.82) grayscale(15%);
+      transition: filter 0.5s, transform 0.5s;
+    }
+    .garage-photo:hover img { filter: brightness(1) grayscale(0%); transform: scale(1.04); }
+    .garage-photo-label {
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      padding: 10px 14px;
+      background: linear-gradient(transparent, rgba(0,0,0,0.85));
+      font-family: 'DM Mono', monospace;
+      font-size: 9px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--gold);
+    }
+    @media (max-width: 600px) {
+      .garage-photos { grid-template-columns: 1fr; max-width: 100%; }
+    }
   </style>
 </head>
 <body>
@@ -979,11 +1017,9 @@
         </div>
       </div>
 
-      <div class="project-card" style="background:var(--dark3);">
-        <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;overflow:hidden;">
-          <div style="font-family:'Bebas Neue',sans-serif;font-size:120px;color:rgba(200,151,58,0.07);letter-spacing:4px;line-height:1;user-select:none;">FORGE</div>
-        </div>
-        <div class="project-overlay" style="background:linear-gradient(transparent 0%, rgba(0,0,0,0.88) 100%);">
+      <div class="project-card">
+        <img src="assets/images/forge3d/forge3d-concept.jpg" alt="Forge3D Concept">
+        <div class="project-overlay">
           <div class="project-num">05 / CONCEPT</div>
           <div class="project-title">FORGE3D</div>
           <div class="project-desc">Startup concept: Bambu Lab-class speed and reliability at 2–3× the build volume. A real gap. A real plan.</div>
