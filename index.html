@@ -4,6 +4,16 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Adib Mazloom — Aerospace Engineer & MBA</title>
+  <meta name="description" content="Portfolio of Adib Mazloom — Mechanical & Aerospace Engineer with an MBA. Hardware programs end-to-end: drone systems, athlete wearables, embedded DAQ, and rapid prototyping from concept to production.">
+  <link rel="canonical" href="https://adibmazloom.com/">
+  <meta name="theme-color" content="#0A0A0A">
+  <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Adib Mazloom — Mechanical & Aerospace Engineer · MBA">
+  <meta property="og:description" content="Hardware programs end-to-end — drone systems, athlete wearables, embedded DAQ, and rapid prototyping from concept to production.">
+  <meta property="og:url" content="https://adibmazloom.com/">
+  <meta property="og:image" content="https://adibmazloom.com/assets/og-image.png">
+  <meta name="twitter:card" content="summary_large_image">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 
@@ -103,6 +113,36 @@
       transition: color 0.3s;
     }
     .nav-links a:hover { color: var(--gold); }
+    .nav-links a.nav-resume {
+      color: var(--gold);
+      border: 1px solid rgba(200,151,58,0.4);
+      padding: 8px 16px;
+      border-radius: 2px;
+      transition: background 0.3s, color 0.3s;
+    }
+    .nav-links a.nav-resume:hover { background: var(--gold); color: var(--dark); }
+
+    .nav-toggle {
+      display: none;
+      flex-direction: column;
+      justify-content: center;
+      gap: 5px;
+      width: 40px; height: 40px;
+      background: none;
+      border: 1px solid rgba(200,151,58,0.4);
+      border-radius: 2px;
+      padding: 8px;
+      cursor: pointer;
+    }
+    .nav-toggle span {
+      display: block;
+      height: 2px;
+      background: var(--gold);
+      transition: transform 0.3s, opacity 0.3s;
+    }
+    .nav-toggle.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+    .nav-toggle.open span:nth-child(2) { opacity: 0; }
+    .nav-toggle.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
 
     /* HERO */
     #hero {
@@ -180,10 +220,37 @@
     }
     .hero-tagline strong { color: var(--white); font-weight: 500; }
 
+    .hero-cta {
+      display: flex;
+      gap: 16px;
+      margin-top: 36px;
+      opacity: 0;
+      animation: fadeUp 0.8s ease 0.7s forwards;
+    }
+    .btn-hero {
+      display: inline-block;
+      background: var(--gold);
+      color: var(--dark);
+      padding: 14px 28px;
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 17px;
+      letter-spacing: 3px;
+      text-decoration: none;
+      border-radius: 2px;
+      transition: background 0.3s, transform 0.2s;
+    }
+    .btn-hero:hover { background: var(--gold-light); transform: translateY(-2px); }
+    .btn-hero.ghost {
+      background: transparent;
+      color: var(--gold);
+      border: 1px solid rgba(200,151,58,0.5);
+    }
+    .btn-hero.ghost:hover { background: rgba(200,151,58,0.1); }
+
     .hero-stats {
       display: flex;
       gap: 48px;
-      margin-top: 56px;
+      margin-top: 48px;
       opacity: 0;
       animation: fadeUp 0.8s ease 0.8s forwards;
     }
@@ -679,8 +746,27 @@
       .contact-layout { grid-template-columns: 1fr; gap: 48px; }
       .hero-stats { gap: 28px; flex-wrap: wrap; }
       .exp-item { grid-template-columns: 1fr; gap: 8px; }
-      .nav-links { display: none; }
+      .nav-toggle { display: flex; }
+      .nav-links {
+        position: fixed;
+        top: 0; right: 0;
+        height: 100vh;
+        width: min(75vw, 320px);
+        background: rgba(10,10,10,0.98);
+        border-left: 1px solid var(--line);
+        flex-direction: column;
+        justify-content: center;
+        gap: 28px;
+        padding: 40px 36px;
+        transform: translateX(100%);
+        transition: transform 0.35s ease;
+        z-index: 99;
+      }
+      .nav-links.open { transform: translateX(0); }
+      .nav-links a { font-size: 14px; }
+      .nav-links a.nav-resume { align-self: flex-start; }
       .about-values { grid-template-columns: 1fr; }
+      .hero-cta { flex-wrap: wrap; }
     }
 
     /* GARAGE PHOTOS */
@@ -730,14 +816,18 @@
   <!-- NAV -->
   <nav id="navbar">
     <a class="nav-logo" href="#hero">ADIB <span>MAZLOOM</span></a>
-    <ul class="nav-links">
+    <ul class="nav-links" id="navLinks">
       <li><a href="#about">About</a></li>
       <li><a href="#experience">Experience</a></li>
       <li><a href="#projects">Projects</a></li>
       <li><a href="#skills">Skills</a></li>
       <li><a href="#beyond">Beyond</a></li>
       <li><a href="#contact">Contact</a></li>
+      <li><a class="nav-resume" href="assets/resume/Adib-Mazloom-Resume.pdf" target="_blank">Resume</a></li>
     </ul>
+    <button class="nav-toggle" id="navToggle" aria-label="Open menu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
   </nav>
 
   <!-- HERO -->
@@ -758,6 +848,10 @@
         I bring <strong>engineering precision, startup speed, and business acumen</strong> 
         to every problem I take on.
       </p>
+      <div class="hero-cta">
+        <a class="btn-hero" href="assets/resume/Adib-Mazloom-Resume.pdf" target="_blank">DOWNLOAD RESUME</a>
+        <a class="btn-hero ghost" href="#contact">GET IN TOUCH</a>
+      </div>
       <div class="hero-stats">
         <div class="stat-item">
           <div class="stat-num">0→1</div>
@@ -978,7 +1072,7 @@
     <div class="projects-grid reveal">
 
       <div class="project-card wide">
-        <img src="assets/images/wearable/wearable1.png" alt="Wearable & Charging Systems">
+        <img src="assets/images/charger/charger3.png" alt="FIYRPOD fleet charging case with 36 wearable pods">
         <div class="project-overlay">
           <div class="project-num">01 / HARDWARE</div>
           <div class="project-title">WEARABLES & CHARGING SYSTEMS</div>
@@ -1247,6 +1341,13 @@
               <div class="contact-link-value">linkedin.com/in/adibmazloom</div>
             </div>
           </a>
+          <a class="contact-link" href="assets/resume/Adib-Mazloom-Resume.pdf" target="_blank">
+            <div class="contact-link-icon">↓</div>
+            <div>
+              <div class="contact-link-label">Resume</div>
+              <div class="contact-link-value">Download PDF</div>
+            </div>
+          </a>
         </div>
       </div>
       <div class="reveal">
@@ -1291,6 +1392,22 @@
         ring.style.width = '36px';
         ring.style.height = '36px';
         ring.style.opacity = '0.5';
+      });
+    });
+
+    // Mobile nav toggle
+    const navToggle = document.getElementById('navToggle');
+    const navLinks = document.getElementById('navLinks');
+    navToggle.addEventListener('click', () => {
+      const open = navLinks.classList.toggle('open');
+      navToggle.classList.toggle('open', open);
+      navToggle.setAttribute('aria-expanded', open);
+    });
+    navLinks.querySelectorAll('a').forEach(link => {
+      link.addEventListener('click', () => {
+        navLinks.classList.remove('open');
+        navToggle.classList.remove('open');
+        navToggle.setAttribute('aria-expanded', 'false');
       });
     });
 
