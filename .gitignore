@@ -1,0 +1,9 @@
+# OS junk
+Thumbs.db
+.DS_Store
+Desktop.ini
+
+# Editor / tooling
+.vscode/
+.claude/
+*.swp
