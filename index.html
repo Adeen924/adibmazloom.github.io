@@ -546,6 +546,11 @@
     .project-card.wide {
       grid-column: span 2;
     }
+    .project-card.full {
+      grid-column: 1 / -1;
+      aspect-ratio: 3/1;
+    }
+    .project-card.full img { object-position: center 30%; }
 
     /* SKILLS */
     #skills { background: var(--dark); }
@@ -741,7 +746,7 @@
       .about-grid { grid-template-columns: 1fr; gap: 48px; }
       .about-img-wrap img { aspect-ratio: 1/1; }
       .projects-grid { grid-template-columns: 1fr; }
-      .project-card.wide { grid-column: auto; }
+      .project-card.wide, .project-card.full { grid-column: auto; aspect-ratio: 4/3; }
       .skills-layout { grid-template-columns: 1fr; gap: 0; }
       .contact-layout { grid-template-columns: 1fr; gap: 48px; }
       .hero-stats { gap: 28px; flex-wrap: wrap; }
@@ -907,7 +912,7 @@
           <div class="value-item">
             <div class="value-icon">⚡</div>
             <div class="value-title">Speed & Precision</div>
-            <div class="value-desc">10–20 iterations per program. ~50% cycle time reduction. Real validation, real data.</div>
+            <div class="value-desc">20 → 9 prototype iterations on a more complex product. 70%+ less heat. Real validation, real data.</div>
           </div>
           <div class="value-item">
             <div class="value-icon">🏗️</div>
@@ -938,7 +943,7 @@
     <div class="exp-timeline">
 
       <div class="exp-item reveal">
-        <div class="exp-date">May 2025 — Present</div>
+        <div class="exp-date">May 2023 — Present</div>
         <div>
           <div class="exp-company">Athlete Management Technologies</div>
           <div class="exp-role">Lead Mechanical Engineer</div>
@@ -947,9 +952,11 @@
             from concept through production release. Develop system architecture and packaging solutions 
             balancing performance, durability, manufacturability, and reliability. Perform structural and 
             thermal analysis using first principles and simulation tools to guide engineering decisions. 
-            Rapidly iterate hardware (10–20 iterations per program), reducing development cycle time by 
-            <strong style="color:var(--gold-light)">~50%</strong>. Execute validation testing, root cause failure analysis, 
-            and data-driven design improvements — achieving a <strong style="color:var(--gold-light)">~30% durability increase</strong>. 
+            DFM/DFA-driven drawing packages cut manufacturing time by <strong style="color:var(--gold-light)">25%+ in-house and 90%+ on outsourced parts</strong>. 
+            Tightened the prototyping loop from 20 iterations on the 20-unit charger to 9 on the more complex 40-unit charger. 
+            Diagnosed an inductance mismatch in the wireless charging pad — improving charging efficiency by 
+            <strong style="color:var(--gold-light)">~30%</strong> — and partnered with EE and software on a PCB redesign that cut 
+            full-load heat generation by <strong style="color:var(--gold-light)">70%+</strong>. 
             Integrate sensors, electronics, and mechanical assemblies end-to-end.
           </div>
           <div class="exp-tags">
@@ -969,7 +976,7 @@
       <div class="exp-item reveal">
         <div class="exp-date">Jun 2021 — Feb 2022</div>
         <div>
-          <div class="exp-company">Confidential — Semiconductor Co. · San Diego, CA</div>
+          <div class="exp-company">Wavious LLC · San Diego, CA</div>
           <div class="exp-role">Thermal Design & Test Engineering Intern</div>
           <div class="exp-desc">
             Embedded in the thermal engineering team of a high-performance chip company, 
@@ -1037,25 +1044,25 @@
       <div class="exp-item reveal">
         <div class="exp-date">2025 — Present</div>
         <div>
-          <div class="exp-company">Independent — Hardware & Software</div>
-          <div class="exp-role">Autonomous Drone System + Software Projects</div>
+          <div class="exp-company">Personal Projects — Hardware</div>
+          <div class="exp-role">FireWatch Drone Venture + TrackTechPro DAQ</div>
           <div class="exp-desc">
-            Designing and developing a modular drone platform focused on structural performance, 
-            system integration, and reliability. Leading airframe and propulsion subsystem design — 
-            motor integration, mounting structures, power delivery. Running trade studies across 
-            materials and configurations. Developed a functional V1 prototype and 
-            <strong style="color:var(--gold-light)">filed a provisional patent for the core drone architecture</strong>. 
-            Also building software tools (TrackTechPro, FireWatch) that bridge hardware workflows 
-            with modern data infrastructure.
+            <strong style="color:var(--gold-light)">FireWatch</strong> started as a personal project that I set out to turn into a business:
+            a two-vehicle autonomous wildfire suppression drone system. I'm designing the full mechanical hardware —
+            airframe structures, propulsion mounts, launcher interface, and payload integration — and building the
+            V1 suppression drone from CAD through physical prototype, with a
+            <strong style="color:var(--gold-light)">provisional patent filed on the tower launcher interface and drone architecture</strong>.
+            <strong style="color:var(--gold-light)">TrackTechPro</strong> is a completed hardware data logging system: an Arduino DAQ
+            with thermocouples at all four brake corners and an IMU, with the enclosure, wiring harness, and vehicle
+            installation all done by hand.
           </div>
           <div class="exp-tags">
             <span class="exp-tag">April 2025 – Present</span>
             <span class="exp-tag">Provisional Patent</span>
             <span class="exp-tag">Airframe Design</span>
-            <span class="exp-tag">Trade Studies</span>
-            <span class="exp-tag">JavaScript</span>
-            <span class="exp-tag">React Native</span>
-            <span class="exp-tag">Python</span>
+            <span class="exp-tag">Propulsion Integration</span>
+            <span class="exp-tag">Data Acquisition</span>
+            <span class="exp-tag">Wiring Harness</span>
           </div>
         </div>
       </div>
@@ -1086,17 +1093,27 @@
         <div class="project-overlay">
           <div class="project-num">02 / DRONE SYSTEMS</div>
           <div class="project-title">FIREWATCH</div>
-          <div class="project-desc">Two-vehicle autonomous drone program — mothership + payload drone architecture. V1 built. Provisional patent filed.</div>
+          <div class="project-desc">Personal project turned startup attempt — a two-vehicle autonomous wildfire drone system. Airframe, propulsion, and launcher hardware. Provisional patent filed.</div>
           <a class="project-link" href="projects/firewatch.html">View Full Project →</a>
+        </div>
+      </div>
+
+      <div class="project-card full">
+        <img src="assets/images/solidworks/conrod-fea.jpg" alt="SolidWorks displacement simulation of a piston and connecting rod">
+        <div class="project-overlay">
+          <div class="project-num">03 / CAD + SIMULATION</div>
+          <div class="project-title">SOLIDWORKS STUDIES</div>
+          <div class="project-desc">Personal design and simulation work — a connecting rod, piston and rod FEA, a heat sink thermal model, and an inline-six engine block.</div>
+          <a class="project-link" href="projects/solidworks.html">View Full Project →</a>
         </div>
       </div>
 
       <div class="project-card">
         <img src="assets/images/tracktechpro/tracktechpro1.png" alt="TrackTechPro">
         <div class="project-overlay">
-          <div class="project-num">03 / EMBEDDED SYSTEMS</div>
+          <div class="project-num">04 / HARDWARE DATA LOGGING</div>
           <div class="project-title">TRACKTECHPRO</div>
-          <div class="project-desc">Custom PCB brake temperature data acquisition system. Built, wired, and installed on-vehicle from scratch.</div>
+          <div class="project-desc">Arduino-based brake temperature data logger with four-corner thermocouples and an IMU. Built, wired, and installed on-vehicle from scratch.</div>
           <a class="project-link" href="projects/tracktechpro.html">View Full Project →</a>
         </div>
       </div>
@@ -1104,7 +1121,7 @@
       <div class="project-card">
         <img src="assets/images/poker/poker1.png" alt="Poker Stats Tracker">
         <div class="project-overlay">
-          <div class="project-num">04 / MOBILE APP</div>
+          <div class="project-num">05 / MOBILE APP</div>
           <div class="project-title">POKER STATS TRACKER</div>
           <div class="project-desc">Full-featured React Native app for poker session tracking and analytics. Designed, built, and shipped solo.</div>
           <a class="project-link" href="projects/poker.html">View Full Project →</a>
@@ -1114,7 +1131,7 @@
       <div class="project-card">
         <img src="assets/images/forge3d/forge3d-concept.png" alt="Forge3D Concept">
         <div class="project-overlay">
-          <div class="project-num">05 / CONCEPT</div>
+          <div class="project-num">06 / CONCEPT</div>
           <div class="project-title">FORGE3D</div>
           <div class="project-desc">Startup concept: Bambu Lab-class speed and reliability at 2–3× the build volume. A real gap. A real plan.</div>
           <a class="project-link" href="projects/forge3d.html">View Concept →</a>
@@ -1338,7 +1355,7 @@
             <div class="contact-link-icon">in</div>
             <div>
               <div class="contact-link-label">LinkedIn</div>
-              <div class="contact-link-value">linkedin.com/in/adibmazloom</div>
+              <div class="contact-link-value">linkedin.com/in/adib-mazloom-6556437b</div>
             </div>
           </a>
           <a class="contact-link" href="assets/resume/Adib-Mazloom-Resume.pdf" target="_blank">
